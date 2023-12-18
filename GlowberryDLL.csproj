@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{AE6AEF48-31BE-4BD0-B265-6045D6B963AD}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>GlowberryDLL</RootNamespace>
+        <AssemblyName>GlowberryDLL</AssemblyName>
+        <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+        <FileAlignment>512</FileAlignment>
+        <LangVersion>9</LangVersion>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="mscorlib" />
+        <Reference Include="System" />
+        <Reference Include="System.ComponentModel.Composition" />
+        <Reference Include="System.Configuration" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Drawing" />
+        <Reference Include="System.Management" />
+        <Reference Include="System.Windows.Forms" />
+        <Reference Include="System.Xml" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="api\ResourceLoader.cs" />
+        <Compile Include="api\server\enumeration\ServerLogicChecks.cs" />
+        <Compile Include="api\server\ServerAPI.cs" />
+        <Compile Include="api\server\ServerBuilding.cs" />
+        <Compile Include="api\server\ServerEditing.cs" />
+        <Compile Include="api\server\ServerInteractions.cs" />
+        <Compile Include="api\server\ServerStarting.cs" />
+        <Compile Include="background\ServerBackupHandler.cs" />
+        <Compile Include="common\caches\GlobalEditorsCache.cs" />
+        <Compile Include="common\caches\QuickAccessEditorsCache.cs" />
+        <Compile Include="common\Constants.cs" />
+        <Compile Include="common\factories\MappedServerTypes.cs" />
+        <Compile Include="common\factories\ServerTypeMappingsFactory.cs" />
+        <Compile Include="common\handlers\AbstractLoggingMessageProcessing.cs" />
+        <Compile Include="common\handlers\ErrorCollection.cs" />
+        <Compile Include="common\handlers\AbstractMessageProcessingOutputHandler.cs" />
+        <Compile Include="common\interfaces\IBackgroundRunner.cs" />
+        <Compile Include="common\Logging.cs" />
+        <Compile Include="common\MinecraftVersion.cs" />
+        <Compile Include="common\models\ConsoleCommand.cs" />
+        <Compile Include="common\models\ServerInformation.cs" />
+        <Compile Include="common\ServerEditor.cs" />
+        <Compile Include="common\server\builders\abstraction\AbstractServerBuilder.cs" />
+        <Compile Include="common\server\builders\ForgeBuilder.cs" />
+        <Compile Include="common\server\builders\MCVBuilder.cs" />
+        <Compile Include="common\server\builders\SpigotBuilder.cs" />
+        <Compile Include="common\server\starters\AbstractServerStarter.cs" />
+        <Compile Include="common\server\starters\ForgeServerStarter.cs" />
+        <Compile Include="common\server\starters\MCVServerStarter.cs" />
+        <Compile Include="common\server\starters\SpigotServerStarter.cs" />
+        <Compile Include="common\server\starters\threads\ServerStarterThreadRunner.cs" />
+        <Compile Include="extensions\HttpClientExtensions.cs" />
+        <Compile Include="extensions\ProcessExtensions.cs" />
+        <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="requests\abstraction\AbstractBaseRequestHandler.cs" />
+        <Compile Include="requests\abstraction\AbstractBaseRequestParser.cs" />
+        <Compile Include="requests\content\FileDownloader.cs" />
+        <Compile Include="requests\forge\ForgeRequestHandler.cs" />
+        <Compile Include="requests\forge\ForgeRequestParser.cs" />
+        <Compile Include="requests\mcversions\full\MCVRequestHandler.cs" />
+        <Compile Include="requests\mcversions\MCVRequestParser.cs" />
+        <Compile Include="requests\mcversions\snapshots\MCVSnapshotsRequestHandler.cs" />
+        <Compile Include="requests\spigot\SpigotRequestHandler.cs" />
+        <Compile Include="requests\spigot\SpigotRequestParser.cs" />
+        <Compile Include="utils\ColorUtils.cs" />
+        <Compile Include="utils\FileUtilExtensions.cs" />
+        <Compile Include="utils\NativeMethods.cs" />
+        <Compile Include="utils\NetworkUtilExtensions.cs" />
+    </ItemGroup>
+    <ItemGroup>
+      <Content Include=".gitignore" />
+      <Content Include="LICENSE.txt" />
+    </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="DotNetZip" Version="1.16.0" />
+      <PackageReference Include="HtmlAgilityPack" Version="1.11.55" />
+      <PackageReference Include="LaminariaCore-General" Version="1.0.0" />
+      <PackageReference Include="LaminariaCore-Winforms" Version="1.0.0" />
+      <PackageReference Include="Open.NAT" Version="2.1.0" />
+      <PackageReference Include="System.CodeDom" Version="7.0.0" />
+      <PackageReference Include="System.IO" Version="4.3.0" />
+      <PackageReference Include="System.Management" Version="7.0.2" />
+      <PackageReference Include="System.Net.Http" Version="4.3.4" />
+      <PackageReference Include="System.Runtime" Version="4.3.0" />
+      <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.0" />
+      <PackageReference Include="System.Security.Cryptography.Encoding" Version="4.3.0" />
+      <PackageReference Include="System.Security.Cryptography.Primitives" Version="4.3.0" />
+      <PackageReference Include="System.Security.Cryptography.X509Certificates" Version="4.3.0" />
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+         Other similar extension points exist, see Microsoft.Common.targets.
+    <Target Name="BeforeBuild">
+    </Target>
+    <Target Name="AfterBuild">
+    </Target>
+    -->
+
+</Project>
