@@ -26,7 +26,7 @@ namespace glowberry.common.server.builders
         /// Main constructor for the ForgeBuilder class. Defines the start-up arguments for the server.
         /// </summary>
         /// <param name="outputHandler">The output system to use while logging the messages.</param>
-        public ForgeBuilder(AbstractMessageProcessingOutputHandler outputHandler) : base(
+        public ForgeBuilder(MessageProcessingOutputHandler outputHandler) : base(
             "-jar -Xmx1024M -Xms1024M %SERVER_JAR% nogui", outputHandler)
         {
             

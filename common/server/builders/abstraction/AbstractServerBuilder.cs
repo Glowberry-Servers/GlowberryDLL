@@ -33,7 +33,7 @@ namespace glowberry.common.server.builders.abstraction
         /// </summary>
         /// <param name="startupArguments">The startup arguments to use when running the server</param>
         /// <param name="system">The message output system to use in order to log the messages</param>
-        protected AbstractServerBuilder(string startupArguments, AbstractMessageProcessingOutputHandler system) : base(system)
+        protected AbstractServerBuilder(string startupArguments, MessageProcessingOutputHandler system) : base(system)
         {
             StartupArguments = startupArguments;
             SpecialErrors.Add("Exception handling console input");

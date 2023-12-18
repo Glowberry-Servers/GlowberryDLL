@@ -1,6 +1,4 @@
-﻿using glowberry.common;
-
-namespace glowberry.api.server
+﻿namespace glowberry.api.server
 {
     /// <summary>
     /// This class is responsible for providing an API for various types of server-related operations. <br></br>

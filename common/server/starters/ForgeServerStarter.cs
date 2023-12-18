@@ -19,7 +19,7 @@ namespace glowberry.common.server.starters
         /// as the "other arguments" that are passed to the server.
         /// </summary>
         /// <param name="outputHandler">The output system to use while logging the messages.</param>
-        public ForgeServerStarter(AbstractMessageProcessingOutputHandler outputHandler) : base(" ", "-jar %RAM_ARGUMENTS% \"%SERVER_JAR%\"", outputHandler)
+        public ForgeServerStarter(MessageProcessingOutputHandler outputHandler) : base(" ", "-jar %RAM_ARGUMENTS% \"%SERVER_JAR%\"", outputHandler)
         {
         }
 

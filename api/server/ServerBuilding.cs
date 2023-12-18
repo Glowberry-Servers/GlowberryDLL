@@ -96,7 +96,7 @@ namespace glowberry.api.server
         /// </summary>
         /// <param name="outputHandler">The output system to use while logging the messages.</param>
         /// <param name="javaRuntime">The java runtime path used to run the server with</param>
-        public async Task Run(AbstractMessageProcessingOutputHandler outputHandler, string javaRuntime)
+        public async Task Run(MessageProcessingOutputHandler outputHandler, string javaRuntime)
         {
             // Deletes the server if it already exists.
             Section allServersSection = FileSystem.GetFirstSectionNamed("servers");

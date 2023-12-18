@@ -48,7 +48,7 @@ namespace glowberry.common.factories
         /// <param name="serverType">The server type to return the builder for</param>
         /// <param name="outputHandler">The output system to use while logging the messages.</param>
         /// <returns>An instance of AbstractServerBuilder mapped to the server type</returns>
-        public AbstractServerBuilder GetBuilderFor(string serverType, AbstractMessageProcessingOutputHandler outputHandler)
+        public AbstractServerBuilder GetBuilderFor(string serverType, MessageProcessingOutputHandler outputHandler)
         {
             if (!Mappings.ContainsKey(serverType.ToLower())) return null;
             
@@ -63,7 +63,7 @@ namespace glowberry.common.factories
         /// <param name="serverType">The server type to return the starter for</param>
         /// <param name="outputHandler">The output system to use while logging the messages.</param>
         /// <returns>An instance of AbstractServerStarter mapped to the server typ1</returns>
-        public AbstractServerStarter GetStarterFor(string serverType, AbstractMessageProcessingOutputHandler outputHandler)
+        public AbstractServerStarter GetStarterFor(string serverType, MessageProcessingOutputHandler outputHandler)
         {
             if (!Mappings.ContainsKey(serverType.ToLower())) return null;
             

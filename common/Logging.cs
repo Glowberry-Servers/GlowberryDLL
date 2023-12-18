@@ -18,7 +18,7 @@ namespace glowberry.common
     /// This is a custom logging class that implements a bunch of methods that are useful for logging purposes, with
     /// file logging support. Since this class is a singleton, the LOGGER property must be used to get the instance.
     /// </summary>
-    internal class Logging
+    public class Logging
     {
         /// <summary>
         /// Main constructor for the logging class, initializes the logging path.

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using glowberry.utils;
@@ -10,7 +9,7 @@ namespace glowberry.common.handlers
     /// This class is responsible for acting as a driver between any passed output systems
     /// and the server message target processing system (Mostly handled by the AbstractLoggingMessageProcessing class).
     /// </summary>
-    public class AbstractMessageProcessingOutputHandler
+    public class MessageProcessingOutputHandler
     {
         /// <summary>
         /// The target output system to use for the message processing system.<br/>
@@ -19,22 +18,22 @@ namespace glowberry.common.handlers
         public object TargetSystem { get; }
 
         /// <summary>
-        /// Initialises the AbstractMessageProcessingOutputHandler class with the passed target output system being STDOUT.
+        /// Initialises the MessageProcessingOutputHandler class with the passed target output system being STDOUT.
         /// </summary>
         /// <param name="target">The output system to use</param>
-        public AbstractMessageProcessingOutputHandler(System.IO.TextWriter target) => this.TargetSystem = target;
+        public MessageProcessingOutputHandler(System.IO.TextWriter target) => this.TargetSystem = target;
         
         /// <summary>
-        /// Initialises the AbstractMessageProcessingOutputHandler class with the passed target output system being a RichTextBox.
+        /// Initialises the MessageProcessingOutputHandler class with the passed target output system being a RichTextBox.
         /// </summary>
         /// <param name="target">The output system to use</param>
-        public AbstractMessageProcessingOutputHandler(RichTextBox target) => this.TargetSystem = target;
+        public MessageProcessingOutputHandler(RichTextBox target) => this.TargetSystem = target;
         
         /// <summary>
-        /// Initialises the AbstractMessageProcessingOutputHandler class with no target output system, meaning that we don't want any
+        /// Initialises the MessageProcessingOutputHandler class with no target output system, meaning that we don't want any
         /// kind of logging to be done.
         /// </summary>
-        public AbstractMessageProcessingOutputHandler() => this.TargetSystem = null;
+        public MessageProcessingOutputHandler() => this.TargetSystem = null;
 
         /// <summary>
         /// Decides which method to use to write the message to the target output system based on the

@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using glowberry.common.handlers;
 using glowberry.common.server.builders.abstraction;
 
@@ -18,7 +17,7 @@ namespace glowberry.common.server.builders
         /// Main constructor for the SpigotBuilder class. Defines the start-up arguments for the server.
         /// </summary>
         /// <param name="outputHandler">The output system to use while logging the messages.</param>
-        public SpigotBuilder(AbstractMessageProcessingOutputHandler outputHandler) : base("-DIReallyKnowWhatIAmDoingISwear=true -jar %SERVER_JAR% nogui", outputHandler)
+        public SpigotBuilder(MessageProcessingOutputHandler outputHandler) : base("-DIReallyKnowWhatIAmDoingISwear=true -jar %SERVER_JAR% nogui", outputHandler)
         {
         }
 

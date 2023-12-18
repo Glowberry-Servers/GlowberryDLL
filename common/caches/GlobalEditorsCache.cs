@@ -11,7 +11,7 @@ namespace glowberry.common.caches
     /// This singleton class implements a global ServerEditors cache, used to avoid having to re-fetch
     /// them every time, to diminish the amount of disk reads per instance.
     /// </summary>
-    internal class GlobalEditorsCache
+    public class GlobalEditorsCache
     {
         
         /// <summary>

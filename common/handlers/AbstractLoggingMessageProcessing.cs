@@ -27,7 +27,7 @@ namespace glowberry.common.handlers
         /// <summary>
         /// The output system to use for the message processing system.
         /// </summary>
-        protected AbstractMessageProcessingOutputHandler OutputSystem { get; }
+        protected MessageProcessingOutputHandler OutputSystem { get; }
         
         /// <summary>
         /// The server interactions API to use for the message processing system.
@@ -39,7 +39,7 @@ namespace glowberry.common.handlers
         /// This system can be STDOUT, a RichTextBox, or any other supported output system.
         /// </summary>
         /// <param name="system">The output system to use for the message processing.</param>
-        protected AbstractLoggingMessageProcessing(AbstractMessageProcessingOutputHandler system) 
+        protected AbstractLoggingMessageProcessing(MessageProcessingOutputHandler system) 
             => this.OutputSystem = system;
 
         /// <summary>

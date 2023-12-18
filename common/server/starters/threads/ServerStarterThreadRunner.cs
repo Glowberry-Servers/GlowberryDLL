@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
-using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading;
@@ -10,7 +9,6 @@ using System.Threading.Tasks;
 using glowberry.api.server;
 using glowberry.common.factories;
 using glowberry.common.handlers;
-using glowberry.extensions;
 
 namespace glowberry.common.server.starters.threads
 {
@@ -56,7 +54,7 @@ namespace glowberry.common.server.starters.threads
         /// to the server.
         /// </summary>
         /// <param name="outputSystem">The output system to use in order to log the messages</param>
-        public void StartThread(AbstractMessageProcessingOutputHandler outputSystem) =>
+        public void StartThread(MessageProcessingOutputHandler outputSystem) =>
             new Thread(() => this.InternalStartThread(outputSystem)) { IsBackground = false }.Start();
 
         /// <summary>
@@ -64,7 +62,7 @@ namespace glowberry.common.server.starters.threads
         /// until the process stops.
         /// </summary>
         /// <param name="outputSystem">The output system to use in order to log the messages</param>
-        private async void InternalStartThread(AbstractMessageProcessingOutputHandler outputSystem)
+        private async void InternalStartThread(MessageProcessingOutputHandler outputSystem)
         {
             // Gets the server starter to be used to run the server
             string serverType = this.Editor.GetServerInformation().Type;
