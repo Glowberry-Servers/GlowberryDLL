@@ -12,7 +12,7 @@ namespace glowberry.common.server.starters
     /// <summary>
     /// This class handles everything related to starting Forge servers.
     /// </summary>
-    public class ForgeServerStarter : AbstractServerStarter
+    internal class ForgeServerStarter : AbstractServerStarter
     {
         /// <summary>
         /// Main constructor for the ForgeServerStarter class. Defines the start-up arguments for the server, as well

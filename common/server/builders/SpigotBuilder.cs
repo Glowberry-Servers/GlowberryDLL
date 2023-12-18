@@ -12,7 +12,7 @@ namespace glowberry.common.server.builders
     /// <summary>
     /// This class implements the server building methods for the spigot releases.
     /// </summary>
-    public class SpigotBuilder : AbstractServerBuilder
+    internal class SpigotBuilder : AbstractServerBuilder
     {
         /// <summary>
         /// Main constructor for the SpigotBuilder class. Defines the start-up arguments for the server.

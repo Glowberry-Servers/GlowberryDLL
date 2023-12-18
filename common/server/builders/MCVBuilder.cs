@@ -7,7 +7,7 @@ namespace glowberry.common.server.builders
     /// <summary>
     /// This class implements the server building methods for the vanilla releases and snapshots.
     /// </summary>
-    public class McvBuilder : AbstractServerBuilder
+    internal class McvBuilder : AbstractServerBuilder
     {
         /// <summary>
         /// Main constructor for the ForgeBuilder class. Defines the start-up arguments for the server.

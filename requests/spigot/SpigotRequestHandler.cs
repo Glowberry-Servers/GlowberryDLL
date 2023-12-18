@@ -12,7 +12,7 @@ namespace glowberry.requests.spigot
     /// This class handles all requests sent to the getbukkit website, in order to retrieve the
     /// spigot versions.
     /// </summary>
-    public class SpigotRequestHandler : AbstractBaseRequestHandler
+    internal class SpigotRequestHandler : AbstractBaseRequestHandler
     {
         public SpigotRequestHandler() : base("https://getbukkit.org/download/spigot")
         {

@@ -17,7 +17,7 @@ namespace glowberry.common.background
     /// process, and frequently check for its status, stopping only when the process does.
     /// TODO: Make it so the user can set the limit of backups, that will delete the oldest ones.
     /// </summary>
-    public class ServerBackupHandler : IBackgroundRunner
+    internal class ServerBackupHandler : IBackgroundRunner
     {
         /// <summary>
         /// Main constructor for the ServerBackupHandler, sets the ServerSection and pid properties

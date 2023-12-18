@@ -14,7 +14,7 @@ namespace glowberry.requests.forge
     /// This class takes in a certain scope of Html Nodes and parses them down
     /// in different ways in order to extract useful information from them.
     /// </summary>
-    public class ForgeRequestParser : AbstractBaseRequestParser
+    internal class ForgeRequestParser : AbstractBaseRequestParser
     {
         /// <summary>
         /// Returns the direct download link for a server given its version page

@@ -13,7 +13,7 @@ namespace glowberry.requests.spigot
     /// This class takes in a certain scope of html nodes and parses out the information
     /// contained in them in such a way that it will be useful for the program
     /// </summary>
-    public class SpigotRequestParser : AbstractBaseRequestParser
+    internal class SpigotRequestParser : AbstractBaseRequestParser
     {
         /// <summary>
         /// Returns the direct download link for a server given its version page

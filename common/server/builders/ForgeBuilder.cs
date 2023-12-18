@@ -20,7 +20,7 @@ namespace glowberry.common.server.builders
     /// <summary>
     /// This class implements the server building methods for the forge releases.
     /// </summary>
-    public class ForgeBuilder : AbstractServerBuilder
+    internal class ForgeBuilder : AbstractServerBuilder
     {
         /// <summary>
         /// Main constructor for the ForgeBuilder class. Defines the start-up arguments for the server.

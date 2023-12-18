@@ -6,7 +6,7 @@ namespace glowberry.common.models
     /// <summary>
     /// This class is responsible for holding the information about a console command.  
     /// </summary>
-    public class ConsoleCommand
+    internal class ConsoleCommand
     {
         /// <summary>
         /// The command in itself.

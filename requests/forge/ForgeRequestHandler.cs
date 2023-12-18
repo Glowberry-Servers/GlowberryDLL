@@ -11,7 +11,7 @@ namespace glowberry.requests.forge
     /// This class handles all requests sent into the minecraftforge website, in order to retrieve all
     /// the server versions
     /// </summary>
-    public class ForgeRequestHandler : AbstractBaseRequestHandler
+    internal class ForgeRequestHandler : AbstractBaseRequestHandler
     {
         public ForgeRequestHandler() : base("https://files.minecraftforge.net/net/minecraftforge/forge/")
         {

@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace glowberry.utils
 {
-    public class ColorUtils
+    internal class ColorUtils
     {
         /// <summary>
         /// Converts a Color object into its closest value in ConsoleColor.

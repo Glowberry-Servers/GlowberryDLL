@@ -10,7 +10,7 @@ namespace glowberry.common
     /// This class represents a Minecraft version. Contains methods related to parsing and sorting the version
     /// strings.
     /// </summary>
-    public class MinecraftVersion : IComparable<MinecraftVersion>
+    internal class MinecraftVersion : IComparable<MinecraftVersion>
     {
         /// <summary>
         /// Main constructor for the MinecraftVersion class. Loads up the version from the raw version string.

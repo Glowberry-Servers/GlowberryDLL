@@ -15,7 +15,7 @@ namespace glowberry.requests.mcversions.full
     /// together with MCVReleaseRequestParser in order to parse the information in a way that
     /// returns useful data.
     /// </summary>
-    public class MCVRequestHandler : AbstractBaseRequestHandler
+    internal class MCVRequestHandler : AbstractBaseRequestHandler
     {
         public MCVRequestHandler() : base("https://mcversions.net")
         {

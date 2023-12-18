@@ -22,7 +22,7 @@ namespace glowberry.common.server.starters.threads
     /// externally, so the usage of sockets is necessary to setup a server that can directly communicate
     /// with the initialised process.
     /// </summary>
-    public class ServerStarterThreadRunner
+    internal class ServerStarterThreadRunner
     {
         
         /// <summary>

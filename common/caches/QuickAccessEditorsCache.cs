@@ -6,7 +6,7 @@ namespace glowberry.common.caches
     /// This class is meant to implement a cache to quickly access the server editors through string keys. It
     /// should be used sparingly, since it is a bit consuming.
     /// </summary>
-    public class QuickAccessEditorsCache
+    internal class QuickAccessEditorsCache
     {
 
         /// <summary>

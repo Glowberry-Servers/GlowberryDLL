@@ -10,7 +10,7 @@ namespace glowberry.requests.content
     /// This class implements every method related to downloading files asynchronously from the
     /// internet.
     /// </summary>
-    public class FileDownloader
+    internal class FileDownloader
     {
         /// <summary>
         /// Downloads a file asynchronously from a given URL.
