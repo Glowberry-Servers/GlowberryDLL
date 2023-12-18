@@ -1,4 +1,5 @@
-﻿using LaminariaCore_Winforms.common;
+﻿using System.Threading.Tasks;
+using LaminariaCore_Winforms.common;
 using glowberry.common.handlers;
 using glowberry.common.server.starters.threads;
 using static glowberry.common.Constants;
@@ -31,10 +32,13 @@ namespace glowberry.api.server
         /// Runs the server starter based on the server type and the settings defined in the server's section.
         /// </summary>
         /// <param name="outputHandler">The output system to use while logging the messages.</param>
-        public void Run(MessageProcessingOutputHandler outputHandler)
+        /// <returns>Whether or not the run was successful</returns>
+        public async Task<bool> Run(MessageProcessingOutputHandler outputHandler)
         {
             ServerStarterThreadRunner serverRunner = new ServerStarterThreadRunner(this.EditingAPI.Raw());
             serverRunner.StartThread(outputHandler);
+
+            return await serverRunner.IsProcessRunning();
         }
  
     }

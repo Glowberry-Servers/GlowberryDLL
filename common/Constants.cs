@@ -21,8 +21,9 @@ namespace glowberry.common
         static Constants()
         {
             // For backwards compatibility, we check if the MCSMLauncher section exists. If it does, rename it to Glowberry.
-            string glowberryStorage = Path.Combine(Environment.SpecialFolder.ApplicationData.ToString(), ".Glowberry");
-            string oldSection = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/.MCSMLauncher";
+            string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string glowberryStorage = Path.Combine(appData, ".Glowberry");
+            string oldSection = Path.Combine(appData, ".MCSMLauncher");
             if (Directory.Exists(oldSection)) Directory.Move(oldSection, oldSection.Replace("MCSMLauncher", "Glowberry"));
 
             // Initialises the file system.

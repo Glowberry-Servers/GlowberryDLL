@@ -65,7 +65,7 @@ namespace glowberry.common.server.starters
             proc.ErrorDataReceived += (sender, e) => RedirectMessageProcessing(sender, e, proc, serverSection.SimpleName);
 
             // Finds the port and IP to start the server with, and starts the server.
-            await StartServer(serverSection, proc, editor);
+            if (!await StartServer(serverSection, proc, editor)) return null;
             return proc;
         }
 

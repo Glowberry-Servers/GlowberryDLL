@@ -29,6 +29,11 @@ namespace glowberry.common.server.starters.threads
         private Process MinecraftServer { get; set; }
         
         /// <summary>
+        /// Whether or not the server has been started.
+        /// </summary>
+        private bool StartupAttempted { get; set; }
+        
+        /// <summary>
         /// The server editor associated with the minecraft server to run
         /// </summary>
         private ServerEditor Editor { get; }
@@ -70,6 +75,8 @@ namespace glowberry.common.server.starters.threads
                 new ServerTypeMappingsFactory().GetStarterFor(serverType, outputSystem);
 
             this.MinecraftServer = await serverStarter.Run(this.Editor); // Actually runs the server
+            this.StartupAttempted = true;
+            if (MinecraftServer == null) return;
 
             // Starts up the pipe server to listen to messages from the client
             PipeSecurity pipeRules = new PipeSecurity();
@@ -161,6 +168,18 @@ namespace glowberry.common.server.starters.threads
             }
             
             catch (Exception e) { Logging.Logger.Error(e); }
+        }
+
+        /// <summary>
+        /// Checks whether or not the process is still running on a 10 second timeout.
+        /// </summary>
+        /// <returns>Boolean, whether or not the server started</returns>
+        public async Task<bool> IsProcessRunning()
+        {
+            DateTime timeout = DateTime.Now.AddSeconds(10);
+            
+            while (!this.StartupAttempted && DateTime.Now < timeout) {await Task.Delay(100); }
+            return !this.MinecraftServer.HasExited;
         }
         
     }
