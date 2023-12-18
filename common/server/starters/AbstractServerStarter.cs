@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
+using System.Runtime.Remoting;
 using System.Threading;
 using System.Threading.Tasks;
 using LaminariaCore_General.utils;
@@ -65,7 +66,9 @@ namespace glowberry.common.server.starters
             proc.ErrorDataReceived += (sender, e) => RedirectMessageProcessing(sender, e, proc, serverSection.SimpleName);
 
             // Finds the port and IP to start the server with, and starts the server.
-            if (!await StartServer(serverSection, proc, editor)) return null;
+            if (!await StartServer(serverSection, proc, editor))
+                throw new ServerException("Could not find a port to start the server with.");
+            
             return proc;
         }
 

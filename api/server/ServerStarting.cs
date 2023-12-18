@@ -33,12 +33,10 @@ namespace glowberry.api.server
         /// </summary>
         /// <param name="outputHandler">The output system to use while logging the messages.</param>
         /// <returns>Whether or not the run was successful</returns>
-        public async Task<bool> Run(MessageProcessingOutputHandler outputHandler)
+        public void Run(MessageProcessingOutputHandler outputHandler)
         {
             ServerStarterThreadRunner serverRunner = new ServerStarterThreadRunner(this.EditingAPI.Raw());
             serverRunner.StartThread(outputHandler);
-
-            return await serverRunner.IsProcessRunning();
         }
  
     }
