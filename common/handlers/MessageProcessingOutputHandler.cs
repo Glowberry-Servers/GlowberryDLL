@@ -16,19 +16,29 @@ namespace glowberry.common.handlers
         /// This may be STDOUT, a RichTextBox, or any other supported output system.
         /// </summary>
         public object TargetSystem { get; }
+        
+        /// <summary>
+        /// A form used to synchronise the UI thread with the message processing thread.
+        /// </summary>
+        public Form Invoker { get; set; }
 
         /// <summary>
         /// Initialises the MessageProcessingOutputHandler class with the passed target output system being STDOUT.
         /// </summary>
         /// <param name="target">The output system to use</param>
         public MessageProcessingOutputHandler(System.IO.TextWriter target) => this.TargetSystem = target;
-        
+
         /// <summary>
         /// Initialises the MessageProcessingOutputHandler class with the passed target output system being a RichTextBox.
         /// </summary>
         /// <param name="target">The output system to use</param>
-        public MessageProcessingOutputHandler(RichTextBox target) => this.TargetSystem = target;
-        
+        /// <param name="invoker">The form that will be used to invoke the ui changes from</param>
+        public MessageProcessingOutputHandler(RichTextBox target, Form invoker)
+        {
+            this.TargetSystem = target;
+            this.Invoker = invoker;
+        }
+
         /// <summary>
         /// Initialises the MessageProcessingOutputHandler class with no target output system, meaning that we don't want any
         /// kind of logging to be done.
@@ -41,13 +51,12 @@ namespace glowberry.common.handlers
         /// </summary>
         /// <param name="message">The message to write</param>
         /// <param name="color">The color to write it as</param>
-        /// <param name="invoker">The form that will be used to invoke the ui changes from</param>
-        public void Write(string message, Color color = new (), Form invoker = null)
+        public void Write(string message, Color color = new ())
         {
             switch (this.TargetSystem)
             {
                 case var _ when this.TargetSystem?.GetType() == typeof(RichTextBox):
-                    this.InternalWriteToTextBox(message, color, invoker);
+                    this.InternalWriteToTextBox(message, color, this.Invoker);
                     break;
 
                 // Explicitly ignore null cases (no target system) for clarity
