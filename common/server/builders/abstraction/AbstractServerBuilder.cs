@@ -21,7 +21,7 @@ namespace glowberry.common.server.builders.abstraction
 {
     /// <summary>
     /// This interface implements contracts for the methods that should be implemented in each
-    /// ServerBuilder.
+    /// ServerBuilding.
     /// </summary>
     [SuppressMessage("ReSharper", "StringLiteralTypo")]
     [SuppressMessage("ReSharper", "AccessToDisposedClosure")]

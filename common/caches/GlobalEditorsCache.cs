@@ -58,7 +58,7 @@ namespace glowberry.common.caches
         /// <param name="serverSection">The server section to match the editor to</param>
         /// <returns>The ServerEditor matching the server name provided</returns>
         public ServerEditor? Get(Section serverSection) =>
-            ServerEditorsCache.FirstOrDefault(x => x.ServerSection.SectionFullPath.Equals(serverSection.SectionFullPath));
+            ServerEditorsCache.FirstOrDefault(x => x != null && x.ServerSection.SectionFullPath.Equals(serverSection.SectionFullPath));
         
         /// <summary>
         /// Adds a server editor to the cache, returning it afterwards.

@@ -18,17 +18,6 @@ namespace glowberry.common
     public class ServerEditor
     {
         /// <summary>
-        /// Main constructor for the ServerEditor class. Sets the server section to work with.
-        /// </summary>
-        /// <param name="serverSection">The server section to bind to the editor</param>
-        public ServerEditor(Section serverSection)
-        {
-            ServerSection = serverSection;
-            this.SettingsBuffer = LoadSettings();
-            this.PropertiesBuffer = LoadProperties();
-        }
-
-        /// <summary>
         /// The server section that the editor will work with.
         /// </summary>
         public Section ServerSection { get; }
@@ -41,9 +30,24 @@ namespace glowberry.common
         
         /// <summary>
         /// A buffer to store the changes made to the property files. This is useful because it allows
-        /// us to cache in changes and then write them all at once.
+        /// us to cache in changes and then write them all at once. <br/>
+        /// 
+        /// To add to this, this buffer here is very special and should be used on-demand. Every property written into here
+        /// should ultimately stem from the server.properties file, using the LoadProperties() method, but when the buffer is flushed
+        /// it will overwrite the properties that were already there.
         /// </summary>
         private Dictionary<string, string> PropertiesBuffer { get; }
+        
+        /// <summary>
+        /// Main constructor for the ServerEditor class. Sets the server section to work with.
+        /// </summary>
+        /// <param name="serverSection">The server section to bind to the editor</param>
+        public ServerEditor(Section serverSection)
+        {
+            ServerSection = serverSection;
+            this.SettingsBuffer = LoadSettings();
+            this.PropertiesBuffer = new Dictionary<string, string>();
+        }
 
         /// <summary>
         /// Selects which buffers should be updated based on the given dictionary's keys, and updates them.
@@ -53,10 +57,13 @@ namespace glowberry.common
         /// <param name="dictionary">The dictionary to update the buffers with</param>
         public void UpdateBuffers(Dictionary<string, string> dictionary)
         {
+            // Loads all the properties from the server.properties file into a dictionary.
+            Dictionary<string, string> properties = LoadProperties();
+            
             foreach (KeyValuePair<string, string> item in dictionary)
                 
-                // Updates the key for the server properties
-                if (PropertiesBuffer.ContainsKey(item.Key))
+                // Updates the key for the server properties, based on all the existing property keys and the buffered keys.
+                if (properties.ContainsKey(item.Key))
                     PropertiesBuffer[item.Key] = item.Value;
 
                 // Updates the key for the server settings
@@ -86,13 +93,17 @@ namespace glowberry.common
 
         /// <summary>
         /// Looks inside both buffers for the given key, and returns the value of the first one found.
+        /// If it isn't found in any of the buffers, look inside the server.properties file.
         /// </summary>
         /// <param name="key">The key to look for</param>
         /// <returns>The value for the requested key</returns>
         public string? GetFromBuffers(string key)
         {
-            if (SettingsBuffer.TryGetValue(key, out string? settings)) return settings;
-            if (PropertiesBuffer.TryGetValue(key, out string? properties)) return properties;
+            if (SettingsBuffer.TryGetValue(key, out string? setting)) return setting;
+            if (PropertiesBuffer.TryGetValue(key, out string? property)) return property;
+            
+            // If the key isn't found in any of the buffers, it might just be a server property.
+            if (LoadProperties().TryGetValue(key, out string? memoryProperty)) return memoryProperty;
             return null;
         }
         
@@ -107,6 +118,9 @@ namespace glowberry.common
         {
             if (SettingsBuffer.TryGetValue(key, out string? settings)) return (T) Convert.ChangeType(settings, typeof(T));
             if (PropertiesBuffer.TryGetValue(key, out string? properties)) return (T) Convert.ChangeType(properties, typeof(T));
+            
+            // If the key isn't found in any of the buffers, it might just be a server property.
+            if (LoadProperties().TryGetValue(key, out string? memoryProperty)) return (T) Convert.ChangeType(memoryProperty, typeof(T));
             return default;
         }
         
@@ -115,14 +129,14 @@ namespace glowberry.common
         /// </summary>
         /// <param name="key">The key to look for</param>
         /// <returns>Whether or not the buffers contain the specified key</returns>
-        public bool BuffersContain(string key) => SettingsBuffer.ContainsKey(key) || PropertiesBuffer.ContainsKey(key);
+        public bool BuffersContain(string key) => SettingsBuffer.ContainsKey(key) || LoadProperties().ContainsKey(key);
 
         /// <summary>
         /// Returns a copy of the properties and settings buffers as a dictionary.
         /// </summary>
-        /// <returns>A Dictionary containing a deep copy of the buffers</returns>
-        public Dictionary<string, string> GetBuffersCopy() => 
-            new (SettingsBuffer.Concat(PropertiesBuffer).ToDictionary(pair => pair.Key, pair => pair.Value));
+        /// <returns>A Dictionary containing a deep copy of the busffers</returns>
+        public Dictionary<string, string> GetServerSettings() => 
+            new (SettingsBuffer.Concat(LoadProperties()).ToDictionary(pair => pair.Key, pair => pair.Value));
 
         /// <summary>
         /// Handles the determination of the server port of a server, based on its defined base
@@ -186,7 +200,6 @@ namespace glowberry.common
                 string[] splitLine = line.Split(new [] {"="}, 2, StringSplitOptions.None);
                 
                 // Filters out the keys that are not eligible to be edited by the user.
-                if (!propertiesMask.Contains(splitLine[0])) continue;
                 propertiesDictionary[splitLine[0]] = splitLine[1];
             }
 

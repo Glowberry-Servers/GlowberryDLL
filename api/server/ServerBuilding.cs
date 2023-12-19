@@ -17,7 +17,7 @@ namespace glowberry.api.server
     /// This class is responsible for providing an API for all types of server building operations
     /// that can be performed.
     /// </summary>
-    public class ServerBuilder
+    public class ServerBuilding
     {
         
         /// <summary>
@@ -58,7 +58,7 @@ namespace glowberry.api.server
         /// <param name="serverName">The name of the server to be built</param>
         /// <param name="serverType">The server type to create the server as</param>
         /// <param name="serverVersion">The server version to build the server on</param>
-        public ServerBuilder(string serverName, string serverType, string serverVersion)
+        public ServerBuilding(string serverName, string serverType, string serverVersion)
         {
             this.ServerVersion = serverVersion;
             this.ServerType = serverType;
@@ -121,8 +121,8 @@ namespace glowberry.api.server
             // If the server fails to build, delete the entire server section and remove its editor from the cache.
             else
             {
-                this.ServersSection.RemoveSection(this.ServerName);
                 GlobalEditorsCache.INSTANCE.Remove(this.ServerName);
+                this.ServersSection.RemoveSection(this.ServerName);
             }
         }
         
