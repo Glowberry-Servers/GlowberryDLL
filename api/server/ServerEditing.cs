@@ -86,7 +86,7 @@ namespace glowberry.api.server
         /// from its ServerInformation object.
         /// </summary>
         /// <returns>A Dictionary containing the current server settings.</returns>
-        public Dictionary<string, string> GetCurrentServerSettings() => Editor.GetBuffersCopy();
+        public Dictionary<string, string> GetCurrentServerSettings() => Editor.GetServerSettings();
         
         /// <returns>
         /// Returns the server section associated with the server name.

@@ -13,14 +13,14 @@
         /// <param name="serverName">The name of the server to be built</param>
         /// <param name="serverType">The server type to create the server as</param>
         /// <param name="serverVersion">The server version to build the server on</param>
-        public ServerBuilder Builder(string serverName, string serverType, string serverVersion)
+        public ServerBuilding Builder(string serverName, string serverType, string serverVersion)
             => new (serverName, serverType, serverVersion);
         
         /// <returns>
         /// Returns an instance of ServerStarting so that the user can start the selected server.
         /// </returns>
         /// <param name="name">The server name to use in order to locate the server to start</param>
-        public ServerStarter Starter(string name) => new (name);
+        public ServerStarting Starter(string name) => new (name);
         
         /// <returns>
         /// Returns an instance of ServerEditing so that the user can edit the selected server.

@@ -9,7 +9,7 @@ namespace glowberry.api.server
     /// <summary>
     /// This class is responsible for providing an API used to start every supported server type.
     /// </summary>
-    public class ServerStarter
+    public class ServerStarting
     {
         
         /// <summary>
@@ -18,11 +18,11 @@ namespace glowberry.api.server
         private ServerEditing EditingAPI { get; }
         
         /// <summary>
-        /// Main constructor for the ServerStarter class. Takes in the server name and the server editor
+        /// Main constructor for the ServerStarting class. Takes in the server name and the server editor
         /// and sends the server starting instructions.
         /// </summary>
         /// <param name="serverName">The name of the server to operate on</param>
-        public ServerStarter(string serverName)
+        public ServerStarting(string serverName)
         {
             Section serverSection = FileSystem.GetFirstSectionNamed(serverName);
             this.EditingAPI = new ServerAPI().Editor(serverSection.SimpleName);
