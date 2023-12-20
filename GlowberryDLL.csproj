@@ -75,6 +75,9 @@
         <Compile Include="common\server\starters\MCVServerStarter.cs" />
         <Compile Include="common\server\starters\SpigotServerStarter.cs" />
         <Compile Include="common\server\starters\threads\ServerStarterThreadRunner.cs" />
+        <Compile Include="console\ConsoleCommand.cs" />
+        <Compile Include="console\AbstractConsoleCommandExecutor.cs" />
+        <Compile Include="console\ConsoleCommandParser.cs" />
         <Compile Include="extensions\HttpClientExtensions.cs" />
         <Compile Include="extensions\ProcessExtensions.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
