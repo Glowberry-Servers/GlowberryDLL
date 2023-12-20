@@ -125,16 +125,16 @@ namespace glowberry.common
         }
         
         /// <summary>
-        /// Checks if the buffers contain the given key.
+        /// Checks if the buffers and property files contain the specified key.
         /// </summary>
         /// <param name="key">The key to look for</param>
         /// <returns>Whether or not the buffers contain the specified key</returns>
-        public bool BuffersContain(string key) => SettingsBuffer.ContainsKey(key) || LoadProperties().ContainsKey(key);
+        public bool ServerSettingsContain(string key) => SettingsBuffer.ContainsKey(key) || LoadProperties().ContainsKey(key);
 
         /// <summary>
         /// Returns a copy of the properties and settings buffers as a dictionary.
         /// </summary>
-        /// <returns>A Dictionary containing a deep copy of the busffers</returns>
+        /// <returns>A Dictionary containing a deep copy of the buffers</returns>
         public Dictionary<string, string> GetServerSettings() => 
             new (SettingsBuffer.Concat(LoadProperties()).ToDictionary(pair => pair.Key, pair => pair.Value));
 
@@ -146,8 +146,8 @@ namespace glowberry.common
         /// <returns>A code signaling the success of the operation.</returns>
         public int HandlePortForServer()
         {
-            int port = BuffersContain("baseport") ? GetFromBuffers<int>("baseport") : 25565;
-            if (BuffersContain("server-ip") && GetFromBuffers("server-ip") != "") return 0;
+            int port = ServerSettingsContain("baseport") ? GetFromBuffers<int>("baseport") : 25565;
+            if (ServerSettingsContain("server-ip") && GetFromBuffers("server-ip") != "") return 0;
 
             // Gets an available port starting on the one specified. If it's -1, it means that there are no available ports.
             int availablePort = NetworkUtils.GetNextAvailablePort(port);
@@ -187,10 +187,7 @@ namespace glowberry.common
             // Creates a new dictionary to store the properties.
             Dictionary<string, string> propertiesDictionary = new () { { "server-port", "25565" } };
             string propertiesPath = ServerSection.GetFirstDocumentNamed("server.properties");
-            
-            // Gets the keys eligible to be edited by the user.
-            List<string> propertiesMask = ServerInformation.GetEligibleProperties();
-            
+
             if (propertiesPath == null) return propertiesDictionary;
 
             // Reads the file line by line, and adds the key and value to the dictionary.

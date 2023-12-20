@@ -38,6 +38,6 @@ namespace glowberry.api.server
             ServerStarterThreadRunner serverRunner = new ServerStarterThreadRunner(this.EditingAPI.Raw());
             serverRunner.StartThread(outputHandler);
         }
- 
+
     }
 }

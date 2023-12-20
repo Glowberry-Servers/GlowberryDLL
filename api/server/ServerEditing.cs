@@ -116,7 +116,7 @@ namespace glowberry.api.server
                     return !this.Raw().GetFromBuffers<bool>("online-mode");
                 
                 case ServerLogicChecks.IsSpawnProtectionEnabled:
-                    return this.Raw().BuffersContain("spawn-protection") && this.Raw().GetFromBuffers<int>("spawn-protection") > 0;
+                    return this.Raw().ServerSettingsContain("spawn-protection") && this.Raw().GetFromBuffers<int>("spawn-protection") > 0;
                 
                 default: return false;
             }

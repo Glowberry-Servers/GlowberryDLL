@@ -7,6 +7,7 @@ using LaminariaCore_General.utils;
 using LaminariaCore_Winforms.common;
 using glowberry.common;
 using glowberry.common.caches;
+using glowberry.utils;
 using static glowberry.common.Constants;
 
 namespace glowberry.api.server
@@ -51,6 +52,12 @@ namespace glowberry.api.server
             Section serverSection = FileSystem.GetFirstSectionNamed(this.ServerName);
             this.Editor = GlobalEditorsCache.INSTANCE.GetOrCreate(serverSection);
         }
+        
+        /// <summary>
+        /// Returns a list of all the created servers.
+        /// </summary>
+        public static List<string> GetServerList() => FileSystem.GetFirstSectionNamed("servers")?.GetAllTopLevelSections().Select(section => section.SimpleName).ToList() 
+                                                      ?? new List<string>();
 
         /// <summary>
         /// Adds a message into the ServerOutputMappings buffer, to be processed later by any users of the API. <br/>
@@ -124,10 +131,24 @@ namespace glowberry.api.server
             => ProcessUtils.GetProcessById(this.Editor.GetServerInformation().CurrentServerProcessID);
 
         /// <summary>
+        /// Checks if the server is running based on its latest process id and the type of process it is. <br/>
+        /// </summary>
+        public bool IsRunning()
+        {
+            Process proc = this.GetServerProcess();
+            return proc is { HasExited: false, ProcessName: "java" or "cmd" };
+        }
+
+        /// <summary>
         /// Kills the server process associated with the server based on the editor instance.
         /// </summary>
-        public void KillServerProcess()
+        public async void KillServerProcess()
         {
+            // Ensures that the server settings file is not being written to before killing the process.
+            Section serverSection = FileSystem.GetFirstSectionNamed(this.ServerName);
+            string settingsPath = serverSection.GetFirstDocumentNamed("server_settings.xml");
+            using var _ = await FileUtilExtensions.WaitForFileAsync(settingsPath);
+            
             Process proc = this.GetServerProcess();
             proc?.Kill();
         }
