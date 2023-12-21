@@ -13,9 +13,11 @@ For any questions or issues, please open an issue in the relevant repository (No
 
 ## Usage
 
-Since this is a DLL file, all that is needed is for it and its dependencies to be added to the program package, and, inside the development environment, for the reference to be added.
+Since this is a DLL file, all that is needed is for it and its dependencies to be added to the program package, and, inside the development environment, for the reference to be added. (This is following the normal file structure for the Glowberry projects; A Glowberry directory with all of them inside it. Change the hint to your path.)
 
 ```xml
-<Reference Include="GlowberryDLL"><HintPath>GlowberryDLL.dll</HintPath></Reference>
+<Reference Include="GlowberryDLL">
+  <HintPath>..\GlowberryDLL\bin\Release\GlowberryDLL.dll</HintPath>
+</Reference>
 ```
 
