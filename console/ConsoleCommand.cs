@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 
-namespace glowberry.common.models
+namespace glowberry.console
 {
     /// <summary>
     /// This class is responsible for holding the information about a console command.  
     /// </summary>
-    internal class ConsoleCommand
+    public class ConsoleCommand
     {
         /// <summary>
         /// The command in itself.

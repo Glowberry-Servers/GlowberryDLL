@@ -56,8 +56,8 @@ namespace glowberry.common.background
             ServerInformation info = Editor.GetServerInformation();
 
             // Loads the settings from the server section.
-            bool serverBackupsEnabled = Editor.BuffersContain("serverbackupson") && Editor.GetFromBuffers<bool>("serverbackupson");
-            bool playerdataBackupsEnabled = Editor.BuffersContain("playerdatabackupson") && Editor.GetFromBuffers<bool>("playerdatabackupson");
+            bool serverBackupsEnabled = Editor.ServerSettingsContain("serverbackupson") && Editor.GetFromBuffers<bool>("serverbackupson");
+            bool playerdataBackupsEnabled = Editor.ServerSettingsContain("playerdatabackupson") && Editor.GetFromBuffers<bool>("playerdatabackupson");
 
             // If neither of the backups are activated, stop the thread to save resources.
             if (!playerdataBackupsEnabled && !serverBackupsEnabled) return;

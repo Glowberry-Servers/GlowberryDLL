@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
 using LaminariaCore_Winforms.common;
 using glowberry.common.handlers;
-using glowberry.common.server.starters.threads;
+using LaminariaCore_General.utils;
 using static glowberry.common.Constants;
 
 namespace glowberry.api.server
@@ -29,15 +31,20 @@ namespace glowberry.api.server
         }
 
         /// <summary>
-        /// Runs the server starter based on the server type and the settings defined in the server's section.
+        /// Sends a command to the glowberry helper to start the server. This process
+        /// will have no visible window and will be hidden from the user.
         /// </summary>
-        /// <param name="outputHandler">The output system to use while logging the messages.</param>
-        /// <returns>Whether or not the run was successful</returns>
-        public void Run(MessageProcessingOutputHandler outputHandler)
+        public void Run()
         {
-            ServerStarterThreadRunner serverRunner = new ServerStarterThreadRunner(this.EditingAPI.Raw());
-            serverRunner.StartThread(outputHandler);
+            Process proc = new Process();
+            proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            proc.StartInfo.CreateNoWindow = true;
+            proc.StartInfo.UseShellExecute = false;
+            proc.StartInfo.WorkingDirectory = Directory.GetCurrentDirectory();
+            proc.StartInfo.FileName = "gbhelper.exe";
+            proc.StartInfo.Arguments = $"run-server --name {this.EditingAPI.GetServerName()}";
+            
+            proc.Start();
         }
- 
     }
 }

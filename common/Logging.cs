@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using LaminariaCore_General.utils;
+using static glowberry.common.Constants;
 
 namespace glowberry.common
 {
@@ -13,6 +14,18 @@ namespace glowberry.common
         File,
         All
     }
+    
+    /// <summary>
+    /// The logging level to be used in the logging methods.
+    /// </summary>
+    public enum LoggingLevel
+    {
+        Debug = 1,
+        Info = 2,
+        Warn = 3,
+        Error = 4,
+        Fatal = 5
+    }
 
     /// <summary>
     /// This is a custom logging class that implements a bunch of methods that are useful for logging purposes, with
@@ -20,14 +33,6 @@ namespace glowberry.common
     /// </summary>
     public class Logging
     {
-        /// <summary>
-        /// Main constructor for the logging class, initializes the logging path.
-        /// </summary>
-        private Logging()
-        {
-            LoggingFilePath = Path.Combine(".", LoggingSession + ".log");
-        }
-
         /// <summary>
         /// The logging instance to use in the program.
         /// </summary>
@@ -52,6 +57,24 @@ namespace glowberry.common
         /// The current logging session, based on the current date.
         /// </summary>
         public string LoggingSession { get; } = DateTime.Now.ToString("yyyy.MM.dd.HH.mm.ss");
+        
+        /// <summary>
+        /// The minimum logging level required for the console to log.
+        /// </summary>
+        public static LoggingLevel MinimumConsoleLoggingLevel { get; set; } = LoggingLevel.Debug;
+        
+        /// <summary>
+        /// The minimum logging level required for the file to log.
+        /// </summary>
+        public static LoggingLevel MinimumFileLoggingLevel { get; set; } = LoggingLevel.Debug;
+        
+        /// <summary>
+        /// Main constructor for the logging class, initializes the logging path.
+        /// </summary>
+        private Logging()
+        {
+            LoggingFilePath = Path.Combine(FileSystem.GetFirstSectionNamed("logs").SectionFullPath, LoggingSession + ".log");
+        }
 
         /// <summary>
         /// Logs a message in a specified way, according to the set format, at the DEBUG level.
@@ -60,7 +83,7 @@ namespace glowberry.common
         /// <param name="loggingType">The type of logging to be performed</param>
         public string Debug(string message, LoggingType loggingType = LoggingType.All)
         {
-            return _internalLog(message, "DEBUG", loggingType);
+            return _internalLog(message, LoggingLevel.Debug, loggingType);
         }
 
         /// <summary>
@@ -70,7 +93,7 @@ namespace glowberry.common
         /// <param name="loggingType">The type of logging to be performed</param>
         public string Info(string message, LoggingType loggingType = LoggingType.All)
         {
-            return _internalLog(message, "INFO", loggingType);
+            return _internalLog(message, LoggingLevel.Info, loggingType);
         }
 
         /// <summary>
@@ -80,7 +103,7 @@ namespace glowberry.common
         /// <param name="loggingType">The type of logging to be performed</param>
         public string Warn(string message, LoggingType loggingType = LoggingType.All)
         {
-            return _internalLog(message, "WARN", loggingType);
+            return _internalLog(message, LoggingLevel.Warn, loggingType);
         }
 
         /// <summary>
@@ -90,7 +113,7 @@ namespace glowberry.common
         /// <param name="loggingType">The type of logging to be performed</param>
         public string Error(string message, LoggingType loggingType = LoggingType.All)
         {
-            return _internalLog(message, "ERROR", loggingType);
+            return _internalLog(message, LoggingLevel.Error, loggingType);
         }
         
         /// <summary>
@@ -100,7 +123,7 @@ namespace glowberry.common
         /// <param name="loggingType">The type of logging to be performed</param>
         public string Error(Exception err, LoggingType loggingType = LoggingType.All)
         {
-            return _internalLog(err.Message + '\n' + err.StackTrace, "ERROR", loggingType);
+            return _internalLog(err.Message + '\n' + err.StackTrace, LoggingLevel.Error, loggingType);
         }
         
         /// <summary>
@@ -110,7 +133,7 @@ namespace glowberry.common
         /// <param name="loggingType">The type of logging to be performed</param>
         public string Fatal(string message, LoggingType loggingType = LoggingType.All)
         {
-            return _internalLog(message, "FATAL", loggingType);
+            return _internalLog(message, LoggingLevel.Fatal, loggingType);
         }
         
         /// <summary>
@@ -120,7 +143,7 @@ namespace glowberry.common
         /// <param name="loggingType">The type of logging to be performed</param>
         public string Fatal(Exception err, LoggingType loggingType = LoggingType.All)
         {
-            return _internalLog(err.Message + '\n' + err.StackTrace, "FATAL", loggingType);
+            return _internalLog(err.Message + '\n' + err.StackTrace, LoggingLevel.Fatal, loggingType);
         }
 
         /// <summary>
@@ -129,17 +152,17 @@ namespace glowberry.common
         /// <param name="message">The message to be logged</param>
         /// <param name="level">The level of logging to use</param>
         /// <param name="loggingType">The type of logging, either in a file, console, or both.</param>
-        private string _internalLog(string message, string level, LoggingType loggingType)
+        private string _internalLog(string message, LoggingLevel level, LoggingType loggingType)
         {
             try
             {
-                string[] preparedStrings = _buildFormats(message, level);
+                string[] preparedStrings = _buildFormats(message, level.ToString());
                 FileUtils.EnsurePath(LoggingFilePath);
 
-                if (loggingType == LoggingType.File || loggingType == LoggingType.All)
+                if (loggingType is LoggingType.File or LoggingType.All && level >= MinimumFileLoggingLevel)
                     FileUtils.AppendToFile(LoggingFilePath, preparedStrings[1]);
 
-                if (loggingType == LoggingType.Console || loggingType == LoggingType.All)
+                if (loggingType is LoggingType.Console or LoggingType.All && level >= MinimumConsoleLoggingLevel)
                     Console.WriteLine(preparedStrings[0]);
             }
             catch (IOException)
