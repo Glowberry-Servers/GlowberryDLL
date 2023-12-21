@@ -11,3 +11,11 @@ This project is licensed under the terms of the MIT license.
 
 For any questions or issues, please open an issue in the relevant repository (Not this one!).
 
+## Usage
+
+Since this is a DLL file, all that is needed is for it and its dependencies to be added to the program package, and, inside the development environment, for the reference to be added.
+
+```xml
+<Reference Include="GlowberryDLL"></Reference>
+```
+
