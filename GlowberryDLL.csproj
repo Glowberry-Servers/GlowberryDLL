@@ -74,7 +74,6 @@
         <Compile Include="common\server\starters\ForgeServerStarter.cs" />
         <Compile Include="common\server\starters\MCVServerStarter.cs" />
         <Compile Include="common\server\starters\SpigotServerStarter.cs" />
-        <Compile Include="common\server\starters\threads\ServerStarterThreadRunner.cs" />
         <Compile Include="console\ConsoleCommand.cs" />
         <Compile Include="console\AbstractConsoleCommandExecutor.cs" />
         <Compile Include="console\ConsoleCommandParser.cs" />
@@ -97,7 +96,7 @@
     </ItemGroup>
     <ItemGroup>
       <Content Include=".gitignore" />
-      <Content Include="LICENSE.txt" />
+      <Content Include="LICENSE" />
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="DotNetZip" Version="1.16.0" />

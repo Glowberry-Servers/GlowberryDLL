@@ -12,8 +12,6 @@ namespace glowberry.console
     ///
     /// The methods created in here must use the provided API to interact with the backend, and their signature
     /// must be «public void Command_(Command Name) (ConsoleCommand command)».
-    ///
-    /// To register a command's description and usage, follow the format in the App.config file.
     /// </summary>
     public class AbstractConsoleCommandExecutor
     {
