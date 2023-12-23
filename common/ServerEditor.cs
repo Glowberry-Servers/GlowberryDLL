@@ -26,8 +26,8 @@ namespace glowberry.common
         /// A buffer to store the changes made to the setting files. This is useful because it allows
         /// us to cache in changes and then write them all at once.
         /// </summary>
-        private Dictionary<string, string> SettingsBuffer { get; }
-        
+        private Dictionary<string, string> SettingsBuffer { get; set; }
+
         /// <summary>
         /// A buffer to store the changes made to the property files. This is useful because it allows
         /// us to cache in changes and then write them all at once. <br/>
@@ -139,6 +139,12 @@ namespace glowberry.common
             new (SettingsBuffer.Concat(LoadProperties()).ToDictionary(pair => pair.Key, pair => pair.Value));
 
         /// <summary>
+        /// Reloads the server information grabbing the new information from the server_settings.xml file,
+        /// synchronizing the settings buffer with the file.
+        /// </summary>
+        public void SynchronizeSettings() => SettingsBuffer = LoadSettings();
+        
+        /// <summary>
         /// Handles the determination of the server port of a server, based on its defined base
         /// port in the server_settings.xml file.
         /// This method sneakily automatically updates the buffers with the new port.
@@ -170,12 +176,12 @@ namespace glowberry.common
         public ServerInformation GetServerInformation()
         {
             // If settings buffer is not empty, return a new server information instance with the settings buffer
-            if (SettingsBuffer.Keys.Count > 0) return new ServerInformation().Update(SettingsBuffer);
+             if (SettingsBuffer.Keys.Count > 0) return new ServerInformation().Update(SettingsBuffer);
 
             // If it is empty, return a new server information instance with the minimal information
             return new ServerInformation().GetMinimalInformation(ServerSection);
         }
-        
+
         /// <summary>
         /// Reads the properties file and returns a dictionary with the key and value of each line.
         /// </summary>
