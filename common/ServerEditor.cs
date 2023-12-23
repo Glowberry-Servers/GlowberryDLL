@@ -139,9 +139,10 @@ namespace glowberry.common
             new (SettingsBuffer.Concat(LoadProperties()).ToDictionary(pair => pair.Key, pair => pair.Value));
 
         /// <summary>
-        /// Reloads the server information grabbing the new information from the server_settings.xml file.
+        /// Reloads the server information grabbing the new information from the server_settings.xml file,
+        /// synchronizing the settings buffer with the file.
         /// </summary>
-        public void ReloadServerInformation() => SettingsBuffer = LoadSettings();
+        public void SynchronizeSettings() => SettingsBuffer = LoadSettings();
         
         /// <summary>
         /// Handles the determination of the server port of a server, based on its defined base
