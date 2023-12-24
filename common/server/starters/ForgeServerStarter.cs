@@ -28,7 +28,7 @@ namespace glowberry.common.server.starters
         /// the "run.bat" file.
         /// </summary>
         /// <param name="editor">The ServerEditor instance to use</param>
-        public override async Task<Process> Run(ServerEditor editor)
+        public override Process Run(ServerEditor editor)
         {
             Section serverSection = editor.ServerSection;
             string runBatFilepath = PathUtils.NormalizePath(serverSection.GetFirstDocumentNamed("run.bat"));
@@ -44,7 +44,7 @@ namespace glowberry.common.server.starters
             proc.ErrorDataReceived += (sender, e) => RedirectMessageProcessing(sender, e, proc, serverSection.SimpleName);
 
             // Finds the port and IP to start the server with, and starts the server.
-            await StartServer(serverSection, proc, editor);
+            StartServer(serverSection, proc, editor);
             return proc;
         }
 

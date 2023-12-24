@@ -42,7 +42,7 @@ namespace glowberry.common.server.starters
         /// </summary>
         /// <param name="editor">The ServerEditor instance to use</param>
         /// <returns>The process that was just created</returns>
-        public virtual async Task<Process> Run(ServerEditor editor)
+        public virtual Process Run(ServerEditor editor)
         {
             // Get the server.jar and server.properties paths.
             Section serverSection = editor.ServerSection;
@@ -66,7 +66,7 @@ namespace glowberry.common.server.starters
             proc.ErrorDataReceived += (sender, e) => RedirectMessageProcessing(sender, e, proc, serverSection.SimpleName);
 
             // Finds the port and IP to start the server with, and starts the server.
-            if (!await StartServer(serverSection, proc, editor))
+            if (!StartServer(serverSection, proc, editor))
                 throw new ServerException("Could not find a port to start the server with.");
             
             return proc;
@@ -80,7 +80,7 @@ namespace glowberry.common.server.starters
         /// <param name="proc">The server process to track</param>
         /// <param name="editor">The editor instance to use to interact with the files</param>
         /// <returns>Whether or not the server was successfully started</returns>
-        protected async Task<bool> StartServer(Section serverSection, Process proc, ServerEditor editor)
+        protected bool StartServer(Section serverSection, Process proc, ServerEditor editor)
         {
             Logging.Logger.Info($"Starting the {serverSection.SimpleName} server...");
 
@@ -92,17 +92,6 @@ namespace glowberry.common.server.starters
                 return false;
             }
             
-            /*
-             Tries to create the port mapping for the server, and updates the server_settings.xml
-             file with the correct ip based on the success of the operation.
-             This will inevitably fail if the router does not support UPnP.
-            */
-            ServerInformation info = editor.GetServerInformation();
-
-            if (info.UPnPOn && await NetworkUtilExtensions.TryCreatePortMapping(info.Port, info.Port))
-                info.IPAddress = NetworkUtils.GetExternalIPAddress();
-
-            else info.IPAddress = NetworkUtils.GetLocalIPAddress();
             
             // Sets up the process to be hidden and not create a window.
             proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
@@ -115,14 +104,7 @@ namespace glowberry.common.server.starters
             proc.BeginErrorReadLine();
             proc.BeginOutputReadLine();
             new Thread(new ServerBackupHandler(editor, proc.Id).RunTask) { IsBackground = false }.Start();
-            info.CurrentServerProcessID = proc.Id;
-            
-            // Updates and flushes the buffers, writing the changes to the files.
-            editor.UpdateBuffers(info.ToDictionary());
-            editor.FlushBuffers(); 
-            
-            // Updates the visual elements of the server and logs the start.
-            Logging.Logger.Info($"Running {serverSection.SimpleName} on {info.IPAddress}:{info.Port}.");
+
             return true;
         }
     }
