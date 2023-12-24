@@ -30,49 +30,7 @@ namespace glowberry.utils
                 await Task.Delay(2 * 1000);
             }
         }
-
-        /// <summary>
-        /// Checks if the current wifi network supports UPnP, and if so, creates a port mapping for the
-        /// specified ports.
-        /// If the port mapping already exists, the current one will be ignored.
-        /// </summary>
-        /// <param name="internalPort">The internal port to redirect incoming traffic to</param>
-        /// <param name="externalPort">The external port to use to redirect the traffic</param>
-        /// <returns>Either true or false, depending on whether the port mapping was successful or not</returns>
-        public static async Task<bool> TryCreatePortMapping(int internalPort, int externalPort)
-        {
-            try
-            {
-                // Discover the router, on a 10 second timeout.
-                NatDiscoverer discoverer = new ();
-                var device = await discoverer.DiscoverDeviceAsync(PortMapper.Upnp, new CancellationTokenSource(10000));
-
-                // Create a new TCP port mapping in the router identified by the external port.
-                try
-                {
-                    Logging.Logger.Info(@$"Creating a new TCP port mapping for I{internalPort}@E{externalPort}...");
-                    await device.CreatePortMapAsync(new Mapping(Protocol.Tcp, internalPort, externalPort,
-                        $"TCP-Glowberry@{internalPort}"));
-                }
-                // If the port mapping already exists, ignore it.
-                catch (MappingException) { Logging.Logger.Warn(@$"The I{internalPort}@E{externalPort} TCP port mapping already exists. Ignoring..."); }
-                
-                return true;
-            }
-
-            // If the network does not support UPnP, ignore it.
-            catch (NatDeviceNotFoundException)
-            {
-                Logging.Logger.Warn(@"The current network does not support UPnP. Ignoring...");
-            }
-            
-            // If any other exception occurs, log it and return false.
-            catch (Exception e)
-            {
-                Logging.Logger.Error(@$"An error occured while trying to create the port mapping.\n{e.StackTrace}");
-            }
-
-            return false;
-        }
+        
+        
     }
 }
