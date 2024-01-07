@@ -52,8 +52,12 @@ namespace glowberry.common.handlers
         protected void RedirectMessageProcessing(object sender, DataReceivedEventArgs e, Process proc, string serverName)
         {
             // Adds the data to the output buffer of the server
-            this.InteractionsAPI = new ServerAPI().Interactions(serverName);
-            this.InteractionsAPI.AddToOutputBuffer(e.Data);
+            try
+            {
+                this.InteractionsAPI = new ServerAPI().Interactions(serverName);
+                this.InteractionsAPI.AddToOutputBuffer(e.Data);
+            }
+            catch { Logging.Logger.Warn("Tried to add to output buffer while directory is gone."); }
 
             this.ProcessMergedData(sender, e, proc);  // Processes the data in the output system
         }
