@@ -84,11 +84,12 @@ namespace glowberry.common.server.builders.abstraction
         private async Task<bool> InternalBuild(Section serverSection, string serverType, string serverVersion, string javaRuntime)
         {
             // Clears the output system in case it's a RichTextBox
-            if (OutputSystem.TargetSystem.GetType() == typeof(RichTextBox))
+            if (OutputSystem.TargetSystem?.GetType() == typeof(RichTextBox))
                 ((RichTextBox)OutputSystem.TargetSystem).Clear();
                     
             OutputSystem.Write(Logging.Logger.Info($"Started building a new {serverType} {serverVersion} server named {serverSection.SimpleName}.") + Environment.NewLine);
-
+            Logging.Logger.Info("Using java version" + javaRuntime);
+            
             // Checks if the server is already downloaded, and if it is, copy it and skip the download
             bool downloadsLookup = TryAddFromDownloads(serverSection.SimpleName, serverVersion, serverType);
 

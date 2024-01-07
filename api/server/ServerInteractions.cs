@@ -50,7 +50,7 @@ namespace glowberry.api.server
             this.ServerName = serverName;
             
             Section serverSection = FileSystem.GetFirstSectionNamed(this.ServerName);
-            this.Editor = GlobalEditorsCache.INSTANCE.GetOrCreate(serverSection);
+            this.Editor = GlobalEditorsCache.INSTANCE.Get(serverSection);
         }
         
         /// <summary>
@@ -78,7 +78,11 @@ namespace glowberry.api.server
         /// <summary>
         /// Clears the output buffer for the server by removing it from the buffer dictionary.
         /// </summary>
-        public void ClearOutputBuffer() => ServerOutputMappings[this.ServerName].Clear();
+        public void ClearOutputBuffer()
+        {
+            if (ServerOutputMappings.ContainsKey(this.ServerName))
+                ServerOutputMappings[this.ServerName].Clear();
+        }
 
         /// <returns>
         /// Returns a copy of the output buffer based on the server name, or an empty list if the
@@ -128,7 +132,7 @@ namespace glowberry.api.server
         /// process id has been assigned to another process.
         /// </returns>
         public Process GetServerProcess() 
-            => ProcessUtils.GetProcessById(this.Editor.GetServerInformation().CurrentServerProcessID);
+            => this.Editor != null ? ProcessUtils.GetProcessById(this.Editor.GetServerInformation().CurrentServerProcessID) : null;
 
         /// <summary>
         /// Checks if the server is running based on its latest process id and the type of process it is. <br/>
