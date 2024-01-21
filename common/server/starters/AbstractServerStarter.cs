@@ -84,14 +84,6 @@ namespace glowberry.common.server.starters
         {
             Logging.Logger.Info($"Starting the {serverSection.SimpleName} server...");
 
-            // Gets an available port starting on the one specified, automatically update and flush the buffers.
-            if (editor.HandlePortForServer() == 1)
-            {
-                string errorMessage = Logging.Logger.Error("Could not find a port to start the server with. Please change the port in the server properties or free up ports to use.");
-                ProcessErrorMessages(errorMessage, proc);
-                return false;
-            }
-
             // Sets up the process to be hidden and not create a window.
             proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             proc.StartInfo.CreateNoWindow = true;
