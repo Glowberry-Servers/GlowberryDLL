@@ -1,7 +1,7 @@
 ﻿#nullable enable
 using System.Collections.Generic;
 using System.Linq;
-using LaminariaCore_Winforms.common;
+using LaminariaCore_General.common;
 
 // ReSharper disable InconsistentNaming
 

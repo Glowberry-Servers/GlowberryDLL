@@ -30,7 +30,5 @@ namespace glowberry.utils
                 await Task.Delay(2 * 1000);
             }
         }
-        
-        
     }
 }

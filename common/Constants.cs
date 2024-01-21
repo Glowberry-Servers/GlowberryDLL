@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using LaminariaCore_Winforms.common;
+using LaminariaCore_General.common;
 
 namespace glowberry.common
 {

@@ -4,11 +4,11 @@ using System.Runtime.Remoting;
 using System.Threading;
 using System.Threading.Tasks;
 using LaminariaCore_General.utils;
-using LaminariaCore_Winforms.common;
 using glowberry.common.background;
 using glowberry.common.handlers;
 using glowberry.common.models;
 using glowberry.utils;
+using LaminariaCore_General.common;
 
 namespace glowberry.common.server.starters
 {
@@ -91,8 +91,7 @@ namespace glowberry.common.server.starters
                 ProcessErrorMessages(errorMessage, proc);
                 return false;
             }
-            
-            
+
             // Sets up the process to be hidden and not create a window.
             proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             proc.StartInfo.CreateNoWindow = true;

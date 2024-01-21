@@ -91,7 +91,6 @@
         <Compile Include="requests\spigot\SpigotRequestHandler.cs" />
         <Compile Include="requests\spigot\SpigotRequestParser.cs" />
         <Compile Include="utils\ColorUtils.cs" />
-        <Compile Include="utils\FileUtilExtensions.cs" />
         <Compile Include="utils\NetworkUtilExtensions.cs" />
     </ItemGroup>
     <ItemGroup>
@@ -101,8 +100,8 @@
     <ItemGroup>
       <PackageReference Include="DotNetZip" Version="1.16.0" />
       <PackageReference Include="HtmlAgilityPack" Version="1.11.55" />
-      <PackageReference Include="LaminariaCore-General" Version="1.0.0" />
-      <PackageReference Include="LaminariaCore-Winforms" Version="1.0.0" />
+      <PackageReference Include="LaminariaCore-General" Version="1.1.1" />
+      <PackageReference Include="LaminariaCore-Winforms" Version="1.0.1" />
       <PackageReference Include="Open.NAT" Version="2.1.0" />
       <PackageReference Include="System.CodeDom" Version="8.0.0" />
       <PackageReference Include="System.IO" Version="4.3.0" />
