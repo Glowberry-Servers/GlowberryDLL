@@ -4,10 +4,9 @@ using System.IO;
 using System.IO.Pipes;
 using System.Linq;
 using LaminariaCore_General.utils;
-using LaminariaCore_Winforms.common;
 using glowberry.common;
 using glowberry.common.caches;
-using glowberry.utils;
+using LaminariaCore_General.common;
 using static glowberry.common.Constants;
 
 namespace glowberry.api.server
@@ -151,7 +150,7 @@ namespace glowberry.api.server
             // Ensures that the server settings file is not being written to before killing the process.
             Section serverSection = FileSystem.GetFirstSectionNamed(this.ServerName);
             string settingsPath = serverSection.GetFirstDocumentNamed("server_settings.xml");
-            using var _ = await FileUtilExtensions.WaitForFileAsync(settingsPath);
+            using var _ = await FileUtils.WaitForFileAsync(settingsPath);
             
             Process proc = this.GetServerProcess();
             proc?.Kill();

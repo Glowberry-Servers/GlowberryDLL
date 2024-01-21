@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
+using LaminariaCore_General.common;
 using LaminariaCore_General.utils;
-using LaminariaCore_Winforms.common;
 
 namespace glowberry.common.models
 {

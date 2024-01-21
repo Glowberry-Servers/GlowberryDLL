@@ -8,7 +8,7 @@ using Ionic.Zip;
 using LaminariaCore_General.utils;
 using glowberry.common.interfaces;
 using glowberry.common.models;
-using LaminariaCore_Winforms.common;
+using LaminariaCore_General.common;
 
 namespace glowberry.common.background
 {
