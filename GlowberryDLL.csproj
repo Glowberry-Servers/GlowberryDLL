@@ -58,6 +58,7 @@
         <Compile Include="common\Constants.cs" />
         <Compile Include="common\factories\MappedServerTypes.cs" />
         <Compile Include="common\factories\ServerTypeMappingsFactory.cs" />
+        <Compile Include="common\GlobalVersionManager.cs" />
         <Compile Include="common\handlers\AbstractLoggingMessageProcessing.cs" />
         <Compile Include="common\handlers\ErrorCollection.cs" />
         <Compile Include="common\handlers\MessageProcessingOutputHandler.cs" />
