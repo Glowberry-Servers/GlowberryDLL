@@ -49,7 +49,7 @@ namespace glowberry.api.server
             this.ServerName = serverName;
             
             Section serverSection = FileSystem.GetFirstSectionNamed(this.ServerName);
-            this.Editor = GlobalEditorsCache.INSTANCE.Get(serverSection);
+            this.Editor = GlobalEditorsCache.INSTANCE.GetOrCreate(serverSection);
         }
         
         /// <summary>
