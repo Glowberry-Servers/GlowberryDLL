@@ -84,6 +84,8 @@
         <Compile Include="requests\abstraction\AbstractBaseRequestHandler.cs" />
         <Compile Include="requests\abstraction\AbstractBaseRequestParser.cs" />
         <Compile Include="requests\content\FileDownloader.cs" />
+        <Compile Include="requests\fabric\FabricRequestHandler.cs" />
+        <Compile Include="requests\fabric\FabricRequestParser.cs" />
         <Compile Include="requests\forge\ForgeRequestHandler.cs" />
         <Compile Include="requests\forge\ForgeRequestParser.cs" />
         <Compile Include="requests\mcversions\full\MCVRequestHandler.cs" />

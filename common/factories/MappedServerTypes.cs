@@ -65,6 +65,16 @@ namespace glowberry.common.factories
                     }
                 },
                 {
+                    "fabric", new Dictionary<string, object>
+                    {
+                        { "handler", new FabricRequestHandler() },
+                        { "parser", new FabricRequestParser() },
+                        { "builder", null },
+                        { "starter", null },
+                        { "cache_file", FileSystem.AddSection("versioncache").AddDocument("fabric_releases.cache") }
+                    }
+                },
+                {
                     "unknown", new Dictionary<string, object>
                     {
                         { "handler", null },
