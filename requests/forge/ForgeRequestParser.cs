@@ -27,7 +27,7 @@ namespace glowberry.requests.forge
             try
             {
                 using CancellationTokenSource ct = new(new TimeSpan(0, 0, 0, 30));
-                HtmlDocument document = await AbstractBaseRequestHandler.Handler.LoadFromWebAsync(url, ct.Token);
+                HtmlDocument document = await AbstractBaseRequestHandler.ScrapeHandler.LoadFromWebAsync(url, ct.Token);
 
                 // Gets the recommended forge version from the website
                 HtmlNode downloadsDiv = document.DocumentNode.SelectSingleNode("//div[@class=\"downloads\"]");
@@ -68,7 +68,7 @@ namespace glowberry.requests.forge
         /// <param name="baseUrl">The current url of the node</param>
         /// <param name="doc">The HtmlNode to parse</param>
         /// <returns>A Dictionary(string,string) containing the mappings</returns>
-        public override Dictionary<string, string> GetVersionUrlMap(string baseUrl, HtmlNode doc)
+        public Dictionary<string, string> GetVersionUrlMap(string baseUrl, HtmlNode doc)
         {
             Dictionary<string, string> mappings = new ();
 

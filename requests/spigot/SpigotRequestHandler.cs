@@ -27,7 +27,7 @@ namespace glowberry.requests.spigot
         {
             try
             {
-                HtmlDocument document = await Handler.LoadFromWebAsync(BaseUrl);
+                HtmlDocument document = await ScrapeHandler.LoadFromWebAsync(BaseUrl);
 
                 IEnumerable<HtmlNode> columnDiv = from div in document.DocumentNode.Descendants("div")
                     where div.HasClass("col-md-12")

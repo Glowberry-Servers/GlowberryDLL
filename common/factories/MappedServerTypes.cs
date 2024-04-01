@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using glowberry.common.server.builders;
 using glowberry.common.server.starters;
+using glowberry.requests.fabric;
 using glowberry.requests.forge;
 using glowberry.requests.mcversions;
 using glowberry.requests.mcversions.full;

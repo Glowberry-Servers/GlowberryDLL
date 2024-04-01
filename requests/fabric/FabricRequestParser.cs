@@ -1,4 +1,4 @@
-﻿ using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -7,7 +7,7 @@ using HtmlAgilityPack;
 using glowberry.common;
 using glowberry.requests.abstraction;
 
-namespace glowberry.requests.mcversions
+namespace glowberry.requests.fabric
 {
     /// <summary>
     /// This class takes in a certain scope of Html Nodes and parses them down
@@ -22,21 +22,24 @@ namespace glowberry.requests.mcversions
         /// Builds a dictionary mapping the fabric version names to their respective URLs.
         /// </summary>
         /// <param name="baseUrl">The base URL to use when creating the dictionary</param>
-        /// <param name="doc">The HTML doc to search for the versions on</param>
+        /// <param name="json">The json file data associated with the version</param>
         /// <returns>A dictionary mapping the versions to their links.</returns>
-        public override Dictionary<string, string> GetVersionUrlMap(string baseUrl, HtmlNode doc)
+        public Dictionary<string, string> GetVersionUrlMap(string baseUrl, List<Dictionary<string, string>> json)
         {
             Dictionary<string, string> mappings = new Dictionary<string, string>();
             
-            foreach (HtmlNode node in doc.Descendants("option"))
+            // Iterate through the json object and add the stable versions to the dictionary.
+            foreach (var entry in json)
             {
-                // Clones the base url so that we can create a new one to alter freely
-                string urlClone = baseUrl.Clone().ToString();
+                if (entry["stable"].Equals("False")) continue;
                 
-                string version = node.InnerText;
-                mappings.Add(version, urlClone.Replace("%VERSION%", version));
+                // Get the version and url from the json object.
+                string url = baseUrl.Clone().ToString();
+                string version = entry["version"];
+                
+                mappings.Add(version, url.Replace("%VERSION%", version));
             }
-            
+
             return mappings;
         }
     }

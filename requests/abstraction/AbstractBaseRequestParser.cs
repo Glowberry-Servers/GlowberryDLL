@@ -24,6 +24,9 @@ namespace glowberry.requests.abstraction
         /// <param name="baseUrl">The current url of the node</param>
         /// <param name="doc">The HtmlNode to parse</param>
         /// <returns>A Dictionary(string,string) containing the mappings</returns>
-        public abstract Dictionary<string, string> GetVersionUrlMap(string baseUrl, HtmlNode doc);
+        public Dictionary<string, string> GetVersionUrlMap(string baseUrl, HtmlNode doc)
+        {
+            return null;
+        }
     }
 }

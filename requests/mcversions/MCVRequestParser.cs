@@ -26,7 +26,7 @@ namespace glowberry.requests.mcversions
             try
             {
                 using CancellationTokenSource ct = new(new TimeSpan(0, 0, 0, 10));
-                HtmlNode node = (await AbstractBaseRequestHandler.Handler.LoadFromWebAsync(url, ct.Token)
+                HtmlNode node = (await AbstractBaseRequestHandler.ScrapeHandler.LoadFromWebAsync(url, ct.Token)
                     .ConfigureAwait(false)).DocumentNode;
 
                 string directLink = node.Descendants("a").First(x => x.HasClass("text-xs")).Attributes["href"].Value;
@@ -47,7 +47,7 @@ namespace glowberry.requests.mcversions
         /// <param name="baseUrl">The current url of the node</param>
         /// <param name="doc">The HtmlNode to parse</param>
         /// <returns>A Dictionary(string,string) containing the mappings</returns>
-        public override Dictionary<string, string> GetVersionUrlMap(string baseUrl, HtmlNode doc)
+        public Dictionary<string, string> GetVersionUrlMap(string baseUrl, HtmlNode doc)
         {
             Dictionary<string, string> mappings = new ();
 
