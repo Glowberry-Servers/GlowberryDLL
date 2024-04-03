@@ -15,8 +15,19 @@ namespace glowberry.requests.fabric
     /// </summary>
     internal class FabricRequestParser : AbstractBaseRequestParser
     {
-        public override Task<string> GetServerDirectDownloadLink(string version, string url) =>
-            throw new NotImplementedException();
+        /// <summary>
+        /// Since fabric is an amazing modloader, simply return the url because the cached URL is already
+        /// the direct download link. We're just keeping this method here for consistency and interface
+        /// contract.
+        /// </summary>
+        /// <param name="version">The version to get the direct link for. Does not matter.</param>
+        /// <param name="url">The direct download link</param>
+        /// <returns>The URL parameter</returns>
+        public override Task<string> GetServerDirectDownloadLink(string version, string url)
+        {
+            return Task.FromResult(url);
+        }
+        
 
         /// <summary>
         /// Builds a dictionary mapping the fabric version names to their respective URLs.

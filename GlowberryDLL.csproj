@@ -68,11 +68,13 @@
         <Compile Include="common\MinecraftVersion.cs" />
         <Compile Include="common\models\ServerInformation.cs" />
         <Compile Include="common\ServerEditor.cs" />
-        <Compile Include="common\server\builders\abstraction\AbstractServerBuilder.cs" />
+        <Compile Include="common\server\builders\AbstractServerBuilder.cs" />
+        <Compile Include="common\server\builders\FabricBuilder.cs" />
         <Compile Include="common\server\builders\ForgeBuilder.cs" />
         <Compile Include="common\server\builders\MCVBuilder.cs" />
         <Compile Include="common\server\builders\SpigotBuilder.cs" />
         <Compile Include="common\server\starters\AbstractServerStarter.cs" />
+        <Compile Include="common\server\starters\FabricServerStarter.cs" />
         <Compile Include="common\server\starters\ForgeServerStarter.cs" />
         <Compile Include="common\server\starters\MCVServerStarter.cs" />
         <Compile Include="common\server\starters\SpigotServerStarter.cs" />

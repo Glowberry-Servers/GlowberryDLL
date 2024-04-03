@@ -17,7 +17,7 @@ using glowberry.requests.content;
  using LaminariaCore_General.common;
  using static glowberry.common.Constants;
 
-namespace glowberry.common.server.builders.abstraction
+namespace glowberry.common.server.builders
 {
     /// <summary>
     /// This interface implements contracts for the methods that should be implemented in each

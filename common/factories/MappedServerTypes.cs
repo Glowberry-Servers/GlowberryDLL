@@ -70,8 +70,8 @@ namespace glowberry.common.factories
                     {
                         { "handler", new FabricRequestHandler() },
                         { "parser", new FabricRequestParser() },
-                        { "builder", null },
-                        { "starter", null },
+                        { "builder", typeof(FabricBuilder) },
+                        { "starter", typeof(FabricServerStarter) },
                         { "cache_file", FileSystem.AddSection("versioncache").AddDocument("fabric_releases.cache") }
                     }
                 },
