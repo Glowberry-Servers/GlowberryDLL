@@ -24,7 +24,9 @@ namespace glowberry.common
             string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             string glowberryStorage = Path.Combine(appData, ".Glowberry");
             string oldSection = Path.Combine(appData, ".MCSMLauncher");
-            if (Directory.Exists(oldSection)) Directory.Move(oldSection, oldSection.Replace("MCSMLauncher", "Glowberry"));
+            
+            if (Directory.Exists(oldSection) && !Directory.Exists(glowberryStorage)) 
+                Directory.Move(oldSection, oldSection.Replace("MCSMLauncher", "Glowberry"));
 
             // Initialises the file system.
             FileSystem = new FileManager(glowberryStorage);

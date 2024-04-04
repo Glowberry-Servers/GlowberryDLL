@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using glowberry.common.handlers;
-using glowberry.common.server.builders.abstraction;
 
 namespace glowberry.common.server.builders
 {
@@ -30,7 +29,7 @@ namespace glowberry.common.server.builders
         /// <returns>The path to the server.jar file used to run the server.</returns>
         protected override Task<string> InstallServer(string serverInstallerPath, string javaRuntime)
         {
-            return Task.Run(() => serverInstallerPath);
+            return Task.FromResult(serverInstallerPath);
         }
 
         /// <summary>

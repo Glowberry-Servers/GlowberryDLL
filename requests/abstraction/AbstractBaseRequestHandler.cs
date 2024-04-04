@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 
@@ -26,9 +27,14 @@ namespace glowberry.requests.abstraction
         protected string BaseUrl { get; }
 
         /// <summary>
-        /// The HTML Handler to perform the requests with.
+        /// The HTML Handler to perform the requests that need parsing with.
         /// </summary>
-        public static HtmlWeb Handler { get; } = new ();
+        public static HtmlWeb ScrapeHandler { get; } = new ();
+        
+        /// <summary>
+        /// The HttpClient to perform raw requests with.
+        /// </summary>
+        public static HttpClient RequestHandler { get; } = new ();
 
         /// <summary>
         /// Accesses the website and parses out all the existent version names mapped

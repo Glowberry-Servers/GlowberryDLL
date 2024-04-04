@@ -8,7 +8,6 @@ using LaminariaCore_General.utils;
 using glowberry.api.server;
 using glowberry.common.handlers;
 using glowberry.common.models;
-using glowberry.common.server.builders.abstraction;
 using glowberry.extensions;
 using LaminariaCore_General.common;
 using static glowberry.common.Constants;
@@ -41,7 +40,7 @@ namespace glowberry.common.server.builders
         /// <param name="javaRuntime">The java runtime path used to build the server</param>
         protected override async Task<string> InstallServer(string serverInstallerPath, string javaRuntime)
         {
-            // Gets the server section from the path of the jar being run, and removes the installer from it
+            // Gets the server section from the path of the jar being run, and gets the name of the server from it
             List<string> directories = serverInstallerPath.Split(Path.DirectorySeparatorChar).ToList();
             string serverName = directories[directories.IndexOf("servers") + 1];
             Section serverSection = FileSystem.GetFirstSectionNamed("servers/" + serverName);

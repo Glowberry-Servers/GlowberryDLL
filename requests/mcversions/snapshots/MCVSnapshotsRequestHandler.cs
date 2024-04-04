@@ -30,7 +30,7 @@ namespace glowberry.requests.mcversions.snapshots
         {
             try
             {
-                HtmlDocument document = await Handler.LoadFromWebAsync(BaseUrl);
+                HtmlDocument document = await ScrapeHandler.LoadFromWebAsync(BaseUrl);
 
                 IEnumerable<HtmlNode> itemDivs = from div in document.DocumentNode.Descendants("div")
                     where div.HasClass("items")

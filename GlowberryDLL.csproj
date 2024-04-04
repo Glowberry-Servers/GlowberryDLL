@@ -33,6 +33,7 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
+        <Reference Include="Microsoft.CSharp" />
         <Reference Include="mscorlib" />
         <Reference Include="System" />
         <Reference Include="System.ComponentModel.Composition" />
@@ -67,11 +68,13 @@
         <Compile Include="common\MinecraftVersion.cs" />
         <Compile Include="common\models\ServerInformation.cs" />
         <Compile Include="common\ServerEditor.cs" />
-        <Compile Include="common\server\builders\abstraction\AbstractServerBuilder.cs" />
+        <Compile Include="common\server\builders\AbstractServerBuilder.cs" />
+        <Compile Include="common\server\builders\FabricBuilder.cs" />
         <Compile Include="common\server\builders\ForgeBuilder.cs" />
         <Compile Include="common\server\builders\MCVBuilder.cs" />
         <Compile Include="common\server\builders\SpigotBuilder.cs" />
         <Compile Include="common\server\starters\AbstractServerStarter.cs" />
+        <Compile Include="common\server\starters\FabricServerStarter.cs" />
         <Compile Include="common\server\starters\ForgeServerStarter.cs" />
         <Compile Include="common\server\starters\MCVServerStarter.cs" />
         <Compile Include="common\server\starters\SpigotServerStarter.cs" />
@@ -84,6 +87,8 @@
         <Compile Include="requests\abstraction\AbstractBaseRequestHandler.cs" />
         <Compile Include="requests\abstraction\AbstractBaseRequestParser.cs" />
         <Compile Include="requests\content\FileDownloader.cs" />
+        <Compile Include="requests\fabric\FabricRequestHandler.cs" />
+        <Compile Include="requests\fabric\FabricRequestParser.cs" />
         <Compile Include="requests\forge\ForgeRequestHandler.cs" />
         <Compile Include="requests\forge\ForgeRequestParser.cs" />
         <Compile Include="requests\mcversions\full\MCVRequestHandler.cs" />
@@ -113,6 +118,7 @@
       <PackageReference Include="System.Security.Cryptography.Encoding" Version="4.3.0" />
       <PackageReference Include="System.Security.Cryptography.Primitives" Version="4.3.0" />
       <PackageReference Include="System.Security.Cryptography.X509Certificates" Version="4.3.2" />
+      <PackageReference Include="System.Text.Json" Version="9.0.0-preview.2.24128.5" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

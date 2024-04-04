@@ -26,7 +26,7 @@ namespace glowberry.requests.forge
         {
             try
             {
-                HtmlDocument document = await Handler.LoadFromWebAsync(BaseUrl);
+                HtmlDocument document = await ScrapeHandler.LoadFromWebAsync(BaseUrl);
                 return new ForgeRequestParser().GetVersionUrlMap(BaseUrl, document.DocumentNode);
             }
             catch (Exception e)

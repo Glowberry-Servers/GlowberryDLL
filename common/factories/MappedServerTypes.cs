@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using glowberry.common.server.builders;
 using glowberry.common.server.starters;
+using glowberry.requests.fabric;
 using glowberry.requests.forge;
 using glowberry.requests.mcversions;
 using glowberry.requests.mcversions.full;
@@ -62,6 +63,16 @@ namespace glowberry.common.factories
                         { "builder", typeof(ForgeBuilder) },
                         { "starter", typeof(ForgeServerStarter) },
                         { "cache_file", FileSystem.AddSection("versioncache").AddDocument("forge_releases.cache") }
+                    }
+                },
+                {
+                    "fabric", new Dictionary<string, object>
+                    {
+                        { "handler", new FabricRequestHandler() },
+                        { "parser", new FabricRequestParser() },
+                        { "builder", typeof(FabricBuilder) },
+                        { "starter", typeof(FabricServerStarter) },
+                        { "cache_file", FileSystem.AddSection("versioncache").AddDocument("fabric_releases.cache") }
                     }
                 },
                 {
