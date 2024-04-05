@@ -36,7 +36,7 @@ namespace glowberry.common
         /// should ultimately stem from the server.properties file, using the LoadProperties() method, but when the buffer is flushed
         /// it will overwrite the properties that were already there.
         /// </summary>
-        private Dictionary<string, string> PropertiesBuffer { get; }
+        private Dictionary<string, string> PropertiesBuffer { get; set; }
         
         /// <summary>
         /// Main constructor for the ServerEditor class. Sets the server section to work with.
@@ -46,7 +46,7 @@ namespace glowberry.common
         {
             ServerSection = serverSection;
             this.SettingsBuffer = LoadSettings();
-            this.PropertiesBuffer = new Dictionary<string, string>();
+            this.PropertiesBuffer = LoadProperties();
         }
 
         /// <summary>
@@ -103,7 +103,12 @@ namespace glowberry.common
             if (PropertiesBuffer.TryGetValue(key, out string? property)) return property;
             
             // If the key isn't found in any of the buffers, it might just be a server property.
-            if (LoadProperties().TryGetValue(key, out string? memoryProperty)) return memoryProperty;
+            if (LoadProperties().TryGetValue(key, out string? memoryProperty))
+            {
+                PropertiesBuffer.Add(key, memoryProperty);
+                return memoryProperty;
+            }
+
             return null;
         }
         
@@ -120,7 +125,12 @@ namespace glowberry.common
             if (PropertiesBuffer.TryGetValue(key, out string? properties)) return (T) Convert.ChangeType(properties, typeof(T));
             
             // If the key isn't found in any of the buffers, it might just be a server property.
-            if (LoadProperties().TryGetValue(key, out string? memoryProperty)) return (T) Convert.ChangeType(memoryProperty, typeof(T));
+            if (LoadProperties().TryGetValue(key, out string? memoryProperty))
+            {
+                PropertiesBuffer.Add(key, memoryProperty);
+                return (T)Convert.ChangeType(memoryProperty, typeof(T));
+            }
+
             return default;
         }
         
@@ -141,8 +151,15 @@ namespace glowberry.common
         /// <summary>
         /// Reloads the server information grabbing the new information from the server_settings.xml file,
         /// synchronizing the settings buffer with the file.
+        /// Also does this for the properties file.
+        /// This is because the new information comes from the glowberry-helper, and it has different buffers than
+        /// these ones.
         /// </summary>
-        public void SynchronizeSettings() => SettingsBuffer = LoadSettings();
+        public void SynchronizeSettings()
+        {
+            SettingsBuffer = LoadSettings();
+            PropertiesBuffer = LoadProperties();
+        }
         
         /// <summary>
         /// Handles the determination of the server port of a server, based on its defined base
