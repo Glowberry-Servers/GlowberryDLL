@@ -73,6 +73,18 @@ namespace glowberry.common.models
         /// The path to the directory where the playerdata backups should be stored at.
         /// </summary>
         public string PlayerdataBackupsPath { get; set; }
+        
+        /// <summary>
+        /// The amount of server backups to keep before deleting the oldest one.
+        /// If set to -1, it will keep all backups.
+        /// </summary>
+        public int RollingServerBackups { get; set; } = -1;
+        
+        /// <summary>
+        /// The amount of playerdata backups to keep before deleting the oldest one.
+        /// If set to -1, it will keep all backups.
+        /// </summary>
+        public int RollingPlayerdataBackups { get; set; } = -1;
 
         /// <summary>
         /// Whether or not to create server backups whilst running the server
@@ -156,7 +168,7 @@ namespace glowberry.common.models
 
         /// <summary>
         /// Using reflection, returns a list of all the properties that can be used
-        /// within the server information object, by obtaining the field names in lowercasew
+        /// within the server information object, by obtaining the field names in lowercase
         /// </summary>
         /// <returns>A list containing the field names</returns>
         public static List<string> GetEligibleProperties() =>

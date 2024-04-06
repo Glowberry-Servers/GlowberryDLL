@@ -19,18 +19,7 @@ namespace glowberry.common.background
     /// </summary>
     internal class ServerBackupHandler : IBackgroundRunner
     {
-        /// <summary>
-        /// Main constructor for the ServerBackupHandler, sets the ServerSection and pid properties
-        /// </summary>
-        /// <param name="editor">The server editor to work with</param>
-        /// <param name="pid">The process ID, for status checking purposes</param>
-        public ServerBackupHandler(ServerEditor editor, int pid)
-        {
-            Editor = editor;
-            ProcessID = pid;
-            ServerSection = editor.ServerSection;
-        }
-
+        
         /// <summary>
         /// The server Editor to use for the backups.
         /// </summary>
@@ -45,6 +34,18 @@ namespace glowberry.common.background
         /// The Process ID of the running server, used to check if it still running.
         /// </summary>
         private int ProcessID { get; }
+        
+        /// <summary>
+        /// Main constructor for the ServerBackupHandler, sets the ServerSection and pid properties
+        /// </summary>
+        /// <param name="editor">The server editor to work with</param>
+        /// <param name="pid">The process ID, for status checking purposes</param>
+        public ServerBackupHandler(ServerEditor editor, int pid)
+        {
+            Editor = editor;
+            ProcessID = pid;
+            ServerSection = editor.ServerSection;
+        }
 
         /// <summary>
         /// Runs the thread until the bound process stops.
@@ -94,13 +95,17 @@ namespace glowberry.common.background
         /// <param name="backupsPath">The server backups path</param>
         /// <param name="serverSection">The server section to use</param>
         [SuppressMessage("ReSharper", "StringLiteralTypo")]
-        private static void CreateServerBackup(string backupsPath, Section serverSection)
+        private void CreateServerBackup(string backupsPath, Section serverSection)
         {
             try
             {
                 // Creates the backup name and the backups folder if they don't exist.
                 string backupName = DateTime.Now.ToString("yyyy-MM-dd.HH.mm.ss") + ".zip";
                 if (!Directory.Exists(backupsPath)) Directory.CreateDirectory(backupsPath);
+                
+                // Checks the rolling backups setting and deletes the oldest backup if necessary.
+                if (Editor.GetFromBuffers<int>("rollingserverbackups") > 0)
+                    HandleRollingBackups(backupsPath, Editor.GetFromBuffers<int>("rollingserverbackups"));
 
                 // Zips the server section into the backups folder.
                 ZipDirectory(serverSection.SectionFullPath, Path.Combine(backupsPath, backupName));
@@ -122,7 +127,7 @@ namespace glowberry.common.background
         /// <param name="backupsPath">The playerdata backups path</param>
         /// <param name="serverSection">The server section to use</param>
         [SuppressMessage("ReSharper", "StringLiteralTypo")]
-        private static void CreatePlayerdataBackup(string backupsPath, Section serverSection)
+        private void CreatePlayerdataBackup(string backupsPath, Section serverSection)
         {
             try
             {
@@ -131,15 +136,18 @@ namespace glowberry.common.background
 
                 // Gets all the 'playerdata' folders in the server, excluding the backups folder.
                 List<Section> filteredSections = serverSection.GetSectionsNamed("playerdata")
-                    .Where(section => !backupsPath.Contains(section.Name))
+                    .Where(section => section.SectionFullPath != backupsPath)
                     .ToList();
 
                 // Creates a playerdata backup for every world in the server.
                 foreach (Section section in filteredSections)
                 {
-                    string backupFileName =
-                        $"{Path.GetFileName(Path.GetDirectoryName(section.SectionFullPath))}-{backupName}";
+                    string backupFileName = $"{Path.GetFileName(Path.GetDirectoryName(section.SectionFullPath))}-{backupName}";
                     string backupFilePath = Path.Combine(backupsPath, backupFileName);
+                    
+                    // Checks the rolling backups setting and deletes the oldest backup if necessary.
+                    if (Editor.GetFromBuffers<int>("rollingplayerdatabackups") > 0)
+                        HandleRollingBackups(backupsPath, Editor.GetFromBuffers<int>("rollingplayerdatabackups"));
 
                     ZipDirectory(section.SectionFullPath, backupFilePath);
                     Logging.Logger.Info($"Backed up {serverSection.SimpleName}.{section.SimpleName} Playerdata to {backupsPath}");
@@ -155,11 +163,56 @@ namespace glowberry.common.background
         }
 
         /// <summary>
+        /// Handles the rolling backups setting, deleting the oldest backups if the current amount
+        /// of backups is greater than the rolling backups value, making space for the new backups.
+        /// </summary>
+        /// <param name="backupsPath">Either the playerdata or server backups path</param>
+        /// <param name="rollingBackupsValue">The amount of backups to keep</param>
+        private void HandleRollingBackups(string backupsPath, int rollingBackupsValue)
+        {
+            // Gets the current amount of backups in the backups folder.
+            int currentBackupCount = Directory.GetFiles(backupsPath, "*.*", SearchOption.AllDirectories)
+                .Count(file => file.EndsWith(".zip"));
+                    
+            // Iterates x times starting on the amount of backups existent (+1 to account for the one that will be created)
+            // deleting any excess backups, one at a time from the oldest to newest.
+            // Decrements i each iteration to reflect the changes.
+            for (int i = currentBackupCount + 1; i > rollingBackupsValue; i--)
+                DeleteOldestBackup(backupsPath);
+        }
+        
+        /// <summary>
+        /// Deletes the oldest backup in the backups folder.
+        /// </summary>
+        /// <param name="backupsPath">Either the playerdata or server backups path</param>
+        private void DeleteOldestBackup(string backupsPath)
+        {
+            // Gets all the .zip files in the backups folder
+            string[] files = Directory.GetFiles(backupsPath, "*.*", SearchOption.AllDirectories)
+                .Where(file => file.EndsWith(".zip")).ToArray();
+            
+            if (files.Length == 0) return;
+            
+            // Deletes the oldest file in the backups folder
+            try
+            {
+                string oldestFile = files.OrderBy(file => new FileInfo(file).CreationTime).First();
+                File.Delete(oldestFile);
+                Logging.Logger.Info($"Deleted {oldestFile} from the {backupsPath}.");
+            }
+            catch (IOException e)
+            {
+                Logging.Logger.Error("Failed to delete the oldest backup in the backups folder.");
+                Logging.Logger.Error(e);
+            }
+        }
+
+        /// <summary>
         /// Zips an entire directory into another location.
         /// </summary>
         /// <param name="directory">The directory to use for zipping</param>
         /// <param name="destination">The destination, including the final filename for the zip.</param>
-        private static void ZipDirectory(string directory, string destination)
+        private void ZipDirectory(string directory, string destination)
         {
             // Creates and opens the zipping file, using a resource manager
             using ZipFile zipper = new(destination);
@@ -180,7 +233,7 @@ namespace glowberry.common.background
         /// Cleans every file that isn't .zip in the backups folder.
         /// </summary>
         /// <param name="backupsPath">The backups file path to use</param>
-        private static void CleanBackups(string backupsPath)
+        private void CleanBackups(string backupsPath)
         {
             try
             {
