@@ -85,9 +85,19 @@ namespace glowberry.common.models
         /// If set to -1, it will keep all backups.
         /// </summary>
         public int RollingPlayerdataBackups { get; set; } = -1;
+        
+        /// <summary>
+        /// The delay in minutes between each server backup.
+        /// </summary>
+        public int ServerBackupsDelay { get; set; } = 120;
+        
+        /// <summary>
+        /// The delay in minutes between each playerdata backup.
+        /// </summary>
+        public int PlayerdataBackupsDelay { get; set; } = 5;
 
         /// <summary>
-        /// Whether or not to create server backups whilst running the server
+        /// Whether to create server backups whilst running the server or not
         /// </summary>
         public bool ServerBackupsOn { get; set; } = false;
 

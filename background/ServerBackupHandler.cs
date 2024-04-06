@@ -71,17 +71,25 @@ namespace glowberry.common.background
             if (playerdataBackupsEnabled) CreatePlayerdataBackup(playerdataBackupsPath, ServerSection);
             if (serverBackupsEnabled) CreateServerBackup(serverBackupsPath, ServerSection);
 
+            // Gets the delays for both backups
+            int serverBackupDelay = Editor.GetFromBuffers<int>("serverbackupsdelay");
+            int playerdataBackupDelay = Editor.GetFromBuffers<int>("playerdatasbackupdelay");
+            
+            // Calculates the time for both the next backups
+            DateTime nextServerBackup = DateTime.Now.AddMinutes(serverBackupDelay);
+            DateTime nextPlayerdataBackup = DateTime.Now.AddMinutes(playerdataBackupDelay);
+            
             // Until the process is no longer active, keep creating backups.
             while (ProcessUtils.GetProcessById(ProcessID)?.ProcessName is "java" or "cmd")
             {
                 DateTime now = DateTime.Now;
 
                 // Creates a server backup if the current hour is divisible by 2 (every 2 hours)
-                if (serverBackupsEnabled && now.Hour % 2 == 0 && now.Minute == 0)
+                if (serverBackupsEnabled && now >= nextServerBackup)
                     CreateServerBackup(serverBackupsPath, ServerSection);
 
                 // Creates a playerdata backup if the current min is divisible by 5 (every 5 minutes)
-                if (playerdataBackupsEnabled && now.Minute % 5 == 0)
+                if (playerdataBackupsEnabled && now >= nextPlayerdataBackup)
                     CreatePlayerdataBackup(playerdataBackupsPath, ServerSection);
                 
                 Thread.Sleep(1 * 1000 * 60); // Sleeps for a minute
