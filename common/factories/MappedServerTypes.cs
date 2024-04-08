@@ -76,7 +76,7 @@ namespace glowberry.common.factories
                     }
                 },
                 {
-                    "unstable fabric", new Dictionary<string, object>
+                    "fabric (unstable)", new Dictionary<string, object>
                     {
                         { "handler", new FabricRequestHandler {GetUnstablesOnly = true} },
                         { "parser", new FabricRequestParser() },
