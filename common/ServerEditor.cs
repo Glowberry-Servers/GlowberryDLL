@@ -146,7 +146,7 @@ namespace glowberry.common
         /// </summary>
         /// <returns>A Dictionary containing a deep copy of the buffers</returns>
         public Dictionary<string, string> GetServerSettings() => 
-            new (SettingsBuffer.Concat(LoadProperties()).ToDictionary(pair => pair.Key, pair => pair.Value));
+            new (SettingsBuffer.Union(LoadProperties()).ToDictionary(pair => pair.Key, pair => pair.Value));
 
         /// <summary>
         /// Reloads the server information grabbing the new information from the server_settings.xml file,

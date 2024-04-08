@@ -68,11 +68,21 @@ namespace glowberry.common.factories
                 {
                     "fabric", new Dictionary<string, object>
                     {
-                        { "handler", new FabricRequestHandler() },
+                        { "handler", new FabricRequestHandler {GetUnstablesOnly = false} },
                         { "parser", new FabricRequestParser() },
                         { "builder", typeof(FabricBuilder) },
                         { "starter", typeof(FabricServerStarter) },
                         { "cache_file", FileSystem.AddSection("versioncache").AddDocument("fabric_releases.cache") }
+                    }
+                },
+                {
+                    "fabric (unstable)", new Dictionary<string, object>
+                    {
+                        { "handler", new FabricRequestHandler {GetUnstablesOnly = true} },
+                        { "parser", new FabricRequestParser() },
+                        { "builder", typeof(FabricBuilder) },
+                        { "starter", typeof(FabricServerStarter) },
+                        { "cache_file", FileSystem.AddSection("versioncache").AddDocument("fabric_releases.unstable.cache") }
                     }
                 },
                 {

@@ -20,6 +20,11 @@ namespace glowberry.requests.fabric
     /// </summary>
     internal class FabricRequestHandler : AbstractBaseRequestHandler
     {
+        /// <summary>
+        /// Whether to retrieve only the unstable versions of the game.
+        /// </summary>
+        public bool GetUnstablesOnly { get; set; }
+        
         public FabricRequestHandler() : base("https://meta.fabricmc.net/v2/versions/")
         {
         }
@@ -50,7 +55,7 @@ namespace glowberry.requests.fabric
                 // Based on the fabric cdn pattern, constructs the url to use within the mapping function
                 string url = $"https://meta.fabricmc.net/v2/versions/loader/%VERSION%/{latestLoaderVersion}/{latestInstallerVersion}/server/jar";
 
-                return new FabricRequestParser().GetVersionUrlMap(url, gameVersions);
+                return new FabricRequestParser {OnlyUnstables = GetUnstablesOnly}.GetVersionUrlMap(url, gameVersions);
             }
             catch (Exception e)
             {
