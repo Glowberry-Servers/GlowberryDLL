@@ -16,6 +16,11 @@ namespace glowberry.requests.fabric
     internal class FabricRequestParser : AbstractBaseRequestParser
     {
         /// <summary>
+        /// Whether to retrieve only the unstable versions of the game.
+        /// </summary>
+        public bool OnlyUnstables { get; set; }
+        
+        /// <summary>
         /// Since fabric is an amazing modloader, simply return the url because the cached URL is already
         /// the direct download link. We're just keeping this method here for consistency and interface
         /// contract.
@@ -42,7 +47,9 @@ namespace glowberry.requests.fabric
             // Iterate through the json object and add the stable versions to the dictionary.
             foreach (var entry in json)
             {
-                if (entry["stable"].Equals("False")) continue;
+                // If check which versions to skip based on whether we want stable or unstable versions.
+                string stableEquality = OnlyUnstables ? "True" : "False";
+                if (entry["stable"].Equals(stableEquality)) continue;
                 
                 // Get the version and url from the json object.
                 string url = baseUrl.Clone().ToString();
