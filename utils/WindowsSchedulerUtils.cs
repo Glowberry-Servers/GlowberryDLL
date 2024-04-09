@@ -54,10 +54,15 @@ public class WindowsSchedulerUtils
             
             // Creates the task definition and registers it into the Windows Task Scheduler
             TaskDefinition definition = taskService.NewTask();
-            definition.RegistrationInfo.Description = $"Glowberry server {serverSection.SimpleName} startup task";
+            definition.RegistrationInfo.Description = $"Glowberry: '{serverSection.SimpleName}' server startup task";
             
             definition.Triggers.Add(new BootTrigger());
             definition.Actions.Add(new ExecAction(bootScriptFilepath));
+
+            definition.Principal.UserId = "SYSTEM";
+            definition.Principal.LogonType = TaskLogonType.S4U;
+            definition.Settings.StopIfGoingOnBatteries = false;
+            definition.Settings.DisallowStartIfOnBatteries = false;
             
             // Register the task under the Glowberry folder in the Windows Task Scheduler
             TaskFolder glowberryFolder = taskService.GetFolder("\\Glowberry");
