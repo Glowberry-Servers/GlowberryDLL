@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using glowberry.common.handlers;
 using LaminariaCore_General.common;
 using LaminariaCore_General.utils;
-using static glowberry.common.Constants;
+using static glowberry.common.configuration.Constants;
 
 namespace glowberry.api.server
 {

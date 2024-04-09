@@ -5,7 +5,7 @@ using glowberry.common;
 using glowberry.common.caches;
 using glowberry.common.models;
 using LaminariaCore_General.common;
-using static glowberry.common.Constants;
+using static glowberry.common.configuration.Constants;
 
 namespace glowberry.api.server
 {

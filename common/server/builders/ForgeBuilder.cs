@@ -10,7 +10,8 @@ using glowberry.common.handlers;
 using glowberry.common.models;
 using glowberry.extensions;
 using LaminariaCore_General.common;
-using static glowberry.common.Constants;
+using static glowberry.common.configuration.Constants;
+
 
 // ReSharper disable AccessToDisposedClosure
 

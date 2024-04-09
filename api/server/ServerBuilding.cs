@@ -9,7 +9,7 @@ using glowberry.common.factories;
 using glowberry.common.handlers;
 using glowberry.common.server.builders;
 using LaminariaCore_General.common;
-using static glowberry.common.Constants;
+using static glowberry.common.configuration.Constants;
 
 namespace glowberry.api.server
 {

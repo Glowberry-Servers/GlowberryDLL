@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using LaminariaCore_General.utils;
-using static glowberry.common.Constants;
+using static glowberry.common.configuration.Constants;
 
 namespace glowberry.common
 {

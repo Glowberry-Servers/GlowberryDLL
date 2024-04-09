@@ -14,8 +14,8 @@ using glowberry.common.handlers;
 using glowberry.common.models;
 using glowberry.extensions;
 using glowberry.requests.content;
- using LaminariaCore_General.common;
- using static glowberry.common.Constants;
+using LaminariaCore_General.common;
+using static glowberry.common.configuration.Constants;
 
 namespace glowberry.common.server.builders
 {
