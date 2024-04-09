@@ -1,8 +1,11 @@
 ﻿using System;
 using System.IO;
+using System.Net.Mime;
+using glowberry.common.models;
 using LaminariaCore_General.common;
+using LaminariaCore_General.utils;
 
-namespace glowberry.common
+namespace glowberry.common.configuration
 {
     /// <summary>
     /// This class defines constant values that are to be carried across the program.
@@ -14,7 +17,7 @@ namespace glowberry.common
         /// files.
         /// </summary>
         public static FileManager FileSystem { get; }
-        
+
         /// <summary>
         /// Check if the MCSMLauncher section exists. If it does, rename it to Glowberry.
         /// </summary>
@@ -24,8 +27,8 @@ namespace glowberry.common
             string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             string glowberryStorage = Path.Combine(appData, ".Glowberry");
             string oldSection = Path.Combine(appData, ".MCSMLauncher");
-            
-            if (Directory.Exists(oldSection) && !Directory.Exists(glowberryStorage)) 
+
+            if (Directory.Exists(oldSection) && !Directory.Exists(glowberryStorage))
                 Directory.Move(oldSection, oldSection.Replace("MCSMLauncher", "Glowberry"));
 
             // Initialises the file system.

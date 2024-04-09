@@ -7,7 +7,7 @@ using glowberry.requests.mcversions;
 using glowberry.requests.mcversions.full;
 using glowberry.requests.mcversions.snapshots;
 using glowberry.requests.spigot;
-using static glowberry.common.Constants;
+using static glowberry.common.configuration.Constants;
 
 
 namespace glowberry.common.factories

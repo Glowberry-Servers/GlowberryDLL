@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Configuration;
 
-namespace glowberry.common
+namespace glowberry.common.configuration
 {
     /// <summary>
     /// This class is responsible providing each program with its version.

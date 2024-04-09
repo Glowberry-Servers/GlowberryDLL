@@ -11,7 +11,7 @@
         <AssemblyName>GlowberryDLL</AssemblyName>
         <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
-        <LangVersion>9</LangVersion>
+        <LangVersion>latestmajor</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <PlatformTarget>AnyCPU</PlatformTarget>
@@ -56,10 +56,10 @@
         <Compile Include="background\ServerBackupHandler.cs" />
         <Compile Include="common\caches\GlobalEditorsCache.cs" />
         <Compile Include="common\caches\QuickAccessEditorsCache.cs" />
-        <Compile Include="common\Constants.cs" />
+        <Compile Include="common\configuration\Constants.cs" />
+        <Compile Include="common\configuration\GlobalVersionManager.cs" />
         <Compile Include="common\factories\MappedServerTypes.cs" />
         <Compile Include="common\factories\ServerTypeMappingsFactory.cs" />
-        <Compile Include="common\GlobalVersionManager.cs" />
         <Compile Include="common\handlers\AbstractLoggingMessageProcessing.cs" />
         <Compile Include="common\handlers\ErrorCollection.cs" />
         <Compile Include="common\handlers\MessageProcessingOutputHandler.cs" />
@@ -98,6 +98,8 @@
         <Compile Include="requests\spigot\SpigotRequestParser.cs" />
         <Compile Include="utils\ColorUtils.cs" />
         <Compile Include="utils\NetworkUtilExtensions.cs" />
+        <Compile Include="utils\PermissionUtils.cs" />
+        <Compile Include="utils\WindowsSchedulerUtils.cs" />
     </ItemGroup>
     <ItemGroup>
       <Content Include=".gitignore" />
@@ -119,6 +121,7 @@
       <PackageReference Include="System.Security.Cryptography.Primitives" Version="4.3.0" />
       <PackageReference Include="System.Security.Cryptography.X509Certificates" Version="4.3.2" />
       <PackageReference Include="System.Text.Json" Version="9.0.0-preview.2.24128.5" />
+      <PackageReference Include="TaskScheduler" Version="2.10.1" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
