@@ -57,9 +57,8 @@ public class WindowsSchedulerUtils
             definition.RegistrationInfo.Description = $"Glowberry: '{serverSection.SimpleName}' server startup task";
             
             definition.Triggers.Add(new BootTrigger());
-            definition.Actions.Add(new ExecAction(bootScriptFilepath));
+            definition.Actions.Add(new ExecAction(BootScriptName, null, serverSection.AddSection(ScriptsSectionName).SectionFullPath));
 
-            definition.Principal.UserId = "SYSTEM";
             definition.Principal.LogonType = TaskLogonType.S4U;
             definition.Settings.StopIfGoingOnBatteries = false;
             definition.Settings.DisallowStartIfOnBatteries = false;
