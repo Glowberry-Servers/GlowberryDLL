@@ -59,7 +59,12 @@ public class WindowsSchedulerUtils
             definition.Triggers.Add(new BootTrigger());
             definition.Actions.Add(new ExecAction(bootScriptFilepath));
             
-            taskService.RootFolder.RegisterTaskDefinition(taskName, definition);
+            // Register the task under the Glowberry folder in the Windows Task Scheduler
+            TaskFolder glowberryFolder = taskService.GetFolder("\\Glowberry");
+            if (glowberryFolder == null)
+                glowberryFolder = taskService.RootFolder.CreateFolder("Glowberry");
+            
+            glowberryFolder.RegisterTaskDefinition(taskName, definition);
         }
         catch { return false;}
 
@@ -79,9 +84,12 @@ public class WindowsSchedulerUtils
 
         try
         {
+            // Get the glowberry task folder to delete the task from
+            TaskFolder glowberryFolder = taskService.GetFolder("\\Glowberry");
+            
             // If the server isn't in the scheduler, then we don't need to do anything.
             if (taskService.FindTask(taskName) != null)
-                taskService.RootFolder.DeleteTask(taskName);
+                glowberryFolder.DeleteTask(taskName);
 
             // If the boot script exists, then we can delete it.
             if (File.Exists(bootScriptFilepath)) File.Delete(bootScriptFilepath);

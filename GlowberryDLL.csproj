@@ -99,7 +99,6 @@
         <Compile Include="utils\ColorUtils.cs" />
         <Compile Include="utils\NetworkUtilExtensions.cs" />
         <Compile Include="utils\PermissionUtils.cs" />
-        <Compile Include="utils\RegistryUtils.cs" />
         <Compile Include="utils\WindowsSchedulerUtils.cs" />
     </ItemGroup>
     <ItemGroup>
