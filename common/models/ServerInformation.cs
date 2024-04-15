@@ -60,7 +60,7 @@ namespace glowberry.common.models
         public string IPAddress { get; set; } = NetworkUtils.GetLocalIPAddress();
         
         /// <summary>
-        /// Whether or not to use UPnP to try to open the port on the router.
+        /// Whether to use UPnP to try to open the port on the router or not.
         /// </summary>
         public bool UPnPOn { get; set; }
 
@@ -102,7 +102,7 @@ namespace glowberry.common.models
         public bool ServerBackupsOn { get; set; } = false;
 
         /// <summary>
-        /// Whether or not to create playerdata backups whilst running the server
+        /// Whether to create playerdata backups whilst running the server or not
         /// </summary>
         public bool PlayerdataBackupsOn { get; set; } = false;
 
@@ -119,9 +119,14 @@ namespace glowberry.common.models
         public int CurrentServerProcessID { get; set; } = -1;
         
         /// <summary>
-        /// Whether or not to use the GUI when running the server.
+        /// Whether to use the GUI when running the server or not
         /// </summary>
         public bool UseGUI { get; set; } = true;
+
+        /// <summary>
+        /// Whether Glowberry should automatically handle the firewall port configurations or not.
+        /// </summary>
+        public bool HandleFirewall { get; set; } = false;
 
         /// <summary>
         /// Creates a new ServerInformation object with the bare minimum information required to run a server.

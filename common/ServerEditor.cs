@@ -145,8 +145,13 @@ namespace glowberry.common
         /// Returns a copy of the properties and settings buffers as a dictionary.
         /// </summary>
         /// <returns>A Dictionary containing a deep copy of the buffers</returns>
-        public Dictionary<string, string> GetServerSettings() => 
-            new (SettingsBuffer.Union(LoadProperties()).ToDictionary(pair => pair.Key, pair => pair.Value));
+        public Dictionary<string, string> GetServerSettings() =>
+            new(SettingsBuffer.Union(LoadProperties()).ToDictionary(pair => pair.Key, pair => pair.Value));
+        
+        /// <returns>
+        /// Returns the server name based on the current server section.
+        /// </returns>
+        public string GetServerName() => this.ServerSection.SimpleName;
 
         /// <summary>
         /// Reloads the server information grabbing the new information from the server_settings.xml file,
@@ -205,7 +210,7 @@ namespace glowberry.common
         /// <returns>A dictionary containing the key:val's of the properties file</returns>
         private Dictionary<string, string> LoadProperties()
         {
-            Logging.Logger.Info($"Loading properties for {ServerSection.SimpleName}");
+            Logging.Logger.Debug($"Loading properties for {ServerSection.SimpleName}");
             
             // Creates a new dictionary to store the properties.
             Dictionary<string, string> propertiesDictionary = new () { { "server-port", "25565" } };
@@ -233,7 +238,7 @@ namespace glowberry.common
         /// <returns>A dictionary containing the deserialized server_settings.xml</returns>
         private Dictionary<string, string> LoadSettings()
         {
-            Logging.Logger.Info($"Loading settings for {ServerSection.SimpleName}");
+            Logging.Logger.Debug($"Loading settings for {ServerSection.SimpleName}");
 
             // Gets the path to the server_settings.xml file.
             string settingsPath = ServerSection.GetFirstDocumentNamed("server_settings.xml");
