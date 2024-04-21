@@ -45,18 +45,18 @@ public class FirewallUtils
     /// <param name="name">The name of the port rule</param>
     /// <param name="exact">Whether the name used has to be matched exactly in order for the rule to be removed or not</param>
     /// <returns>Whether the removal was successful or not</returns>
-    public static bool RemovePortRuleByName(string name, bool exact = true)
+    public static bool RemovePortRuleByName(string name, bool exact = false)
     {
         try
         {
             // Iterates over all the rules and checks if there's one matching the name
-            IFirewallRule rule;
-            
             // Depending on the exact parameter, the rule is found by name matching or by name containing
-            rule = exact ? FirewallManager.Instance.Rules.FirstOrDefault(r => r.Name == name) 
-                : FirewallManager.Instance.Rules.FirstOrDefault(r => r.Name.Contains(name));
-            
-            FirewallManager.Instance.Rules.Remove(rule);
+            IFirewallRule[] rules = exact ? 
+                    FirewallManager.Instance.Rules.ToList().FindAll(r => r.Name == name).ToArray() : 
+                    FirewallManager.Instance.Rules.ToList().FindAll(r => r.Name.Contains(name)).ToArray();
+
+            foreach (IFirewallRule rule in rules)
+                FirewallManager.Instance.Rules.Remove(rule);
         }
         
         catch (Exception e)
@@ -84,11 +84,33 @@ public class FirewallUtils
         // Iterates over all the directions and configures the ports for them
         foreach (FirewallDirection direction in directions)
         {
-            if (!ConfigurePort($"Glowberry-{serverName}", (ushort) info.Port, FirewallAction.Allow, FirewallProtocol.TCP, direction))
+            if (!ConfigurePort($"Glowberry-{serverName}@{info.Port}#TCP", (ushort) info.Port, FirewallAction.Allow, FirewallProtocol.TCP, direction))
                 return false;
         }
 
         return true;
+    }
+    
+    /// <summary>
+    /// Checks if a port rule is present in the firewall. Matches the name exactly if 'exact'
+    /// is set to true, otherwise it checks if the name contains the specified string.
+    /// </summary>
+    /// <param name="name">The name of the rule to check for</param>
+    /// <param name="port">The port to check for, if set to -1, ignores.</param>
+    /// <param name="exact">Whether to exactly match the string or not</param>
+    /// <returns>Whether the port rule exists</returns>
+    public static bool IsPortRulePresent(string name, int port = -1, bool exact = false)
+    {
+        // If the port is set, it checks if the rule contains the port and the name
+        if (port != -1)
+        {
+            return exact ? FirewallManager.Instance.Rules.Any(r => r.Name == name && r.LocalPorts.Contains((ushort) port)) 
+                : FirewallManager.Instance.Rules.Any(r => r.Name.Contains(name) && r.LocalPorts.Contains((ushort) port));
+        }
+        
+        // Otherwise, it just checks if the rule contains the name
+        return exact ? FirewallManager.Instance.Rules.Any(r => r.Name == name) 
+            : FirewallManager.Instance.Rules.Any(r => r.Name.Contains(name));
     }
 
 }
