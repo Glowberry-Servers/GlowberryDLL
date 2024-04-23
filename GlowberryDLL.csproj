@@ -97,6 +97,7 @@
         <Compile Include="requests\spigot\SpigotRequestHandler.cs" />
         <Compile Include="requests\spigot\SpigotRequestParser.cs" />
         <Compile Include="utils\ColorUtils.cs" />
+        <Compile Include="utils\FirewallUtils.cs" />
         <Compile Include="utils\NetworkUtilExtensions.cs" />
         <Compile Include="utils\PermissionUtils.cs" />
         <Compile Include="utils\WindowsSchedulerUtils.cs" />
@@ -122,6 +123,7 @@
       <PackageReference Include="System.Security.Cryptography.X509Certificates" Version="4.3.2" />
       <PackageReference Include="System.Text.Json" Version="9.0.0-preview.2.24128.5" />
       <PackageReference Include="TaskScheduler" Version="2.10.1" />
+      <PackageReference Include="WindowsFirewallHelper" Version="2.2.0.86" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
