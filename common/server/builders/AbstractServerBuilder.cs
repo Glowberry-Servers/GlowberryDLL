@@ -87,7 +87,7 @@ namespace glowberry.common.server.builders
             if (OutputSystem.TargetSystem?.GetType() == typeof(RichTextBox))
                 ((RichTextBox)OutputSystem.TargetSystem).Clear();
                     
-            OutputSystem.Write(Logging.Logger.Info($"Started building a new {serverType} {serverVersion} server named {serverSection.SimpleName}.") + Environment.NewLine);
+            OutputSystem.Write(Logging.Logger.Info($"Started building a new {serverType} {serverVersion} server named '{serverSection.SimpleName}'.") + Environment.NewLine);
             Logging.Logger.Info("Using java version" + javaRuntime);
             
             // Checks if the server is already downloaded, and if it is, copy it and skip the download

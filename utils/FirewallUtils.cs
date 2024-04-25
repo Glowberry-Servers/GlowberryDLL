@@ -28,6 +28,8 @@ public class FirewallUtils
         {
             var rule = FirewallManager.Instance.CreatePortRule(name, action, port, protocol);
             rule.Direction = direction;
+            
+            Logging.Logger.Info($"Adding firewall rule with PORT: {port} with NAME: {name}; ACTION: {action}; PROTOCOL: {protocol}; DIRECTION: {direction}");
             FirewallManager.Instance.Rules.Add(rule);
         }
         catch (Exception e)
@@ -56,7 +58,10 @@ public class FirewallUtils
                     FirewallManager.Instance.Rules.ToList().FindAll(r => r.Name.Contains(name)).ToArray();
 
             foreach (IFirewallRule rule in rules)
+            {
+                Logging.Logger.Info($"Removing firewall rule '{rule.Name}'");
                 FirewallManager.Instance.Rules.Remove(rule);
+            }
         }
         
         catch (Exception e)

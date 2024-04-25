@@ -22,7 +22,6 @@ namespace glowberry.extensions
         {
             HttpResponseMessage response = await client.GetAsync(url, token);
             return await response.Content.ReadAsStreamAsync();
-            
         }
     }
 }

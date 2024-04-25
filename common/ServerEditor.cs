@@ -105,6 +105,7 @@ namespace glowberry.common
             // If the key isn't found in any of the buffers, it might just be a server property.
             if (LoadProperties().TryGetValue(key, out string? memoryProperty))
             {
+                Logging.Logger.Warn("$Key '{key}' not found in buffers. Adding to properties as a failsafe.");
                 PropertiesBuffer.Add(key, memoryProperty);
                 return memoryProperty;
             }
@@ -127,6 +128,7 @@ namespace glowberry.common
             // If the key isn't found in any of the buffers, it might just be a server property.
             if (LoadProperties().TryGetValue(key, out string? memoryProperty))
             {
+                Logging.Logger.Warn($"Key '{key}' not found in buffers. Adding to properties as a failsafe.");
                 PropertiesBuffer.Add(key, memoryProperty);
                 return (T)Convert.ChangeType(memoryProperty, typeof(T));
             }
@@ -138,7 +140,7 @@ namespace glowberry.common
         /// Checks if the buffers and property files contain the specified key.
         /// </summary>
         /// <param name="key">The key to look for</param>
-        /// <returns>Whether or not the buffers contain the specified key</returns>
+        /// <returns>Whether the buffers contain the specified key or not</returns>
         public bool ServerSettingsContain(string key) => SettingsBuffer.ContainsKey(key) || LoadProperties().ContainsKey(key);
 
         /// <summary>
@@ -158,10 +160,11 @@ namespace glowberry.common
         /// synchronizing the settings buffer with the file.
         /// Also does this for the properties file.
         /// This is because the new information comes from the glowberry-helper, and it has different buffers than
-        /// these ones.
+        /// these.
         /// </summary>
         public void SynchronizeSettings()
         {
+            Logging.Logger.Debug($"Synchronizing internal buffers for '{ServerSection.SimpleName}' with the files");
             SettingsBuffer = LoadSettings();
             PropertiesBuffer = LoadProperties();
         }
@@ -174,11 +177,13 @@ namespace glowberry.common
         /// <returns>A code signaling the success of the operation.</returns>
         public int HandlePortForServer()
         {
+            Logging.Logger.Debug($"Handling port for '{ServerSection.SimpleName}'");
             int port = ServerSettingsContain("baseport") ? GetFromBuffers<int>("baseport") : 25565;
             if (ServerSettingsContain("server-ip") && GetFromBuffers("server-ip") != "") return 0;
 
             // Gets an available port starting on the one specified. If it's -1, it means that there are no available ports.
             int availablePort = NetworkUtils.GetNextAvailablePort(port);
+            Logging.Logger.Info($"Port for '{ServerSection.SimpleName}' is {availablePort}");
             if (availablePort == -1) return 1;
 
             // Updates and flushes the buffers with the new port.
@@ -210,7 +215,7 @@ namespace glowberry.common
         /// <returns>A dictionary containing the key:val's of the properties file</returns>
         private Dictionary<string, string> LoadProperties()
         {
-            Logging.Logger.Debug($"Loading properties for {ServerSection.SimpleName}");
+            Logging.Logger.Debug($"Loading properties for '{ServerSection.SimpleName}'");
             
             // Creates a new dictionary to store the properties.
             Dictionary<string, string> propertiesDictionary = new () { { "server-port", "25565" } };
@@ -238,7 +243,7 @@ namespace glowberry.common
         /// <returns>A dictionary containing the deserialized server_settings.xml</returns>
         private Dictionary<string, string> LoadSettings()
         {
-            Logging.Logger.Debug($"Loading settings for {ServerSection.SimpleName}");
+            Logging.Logger.Debug($"Loading settings for '{ServerSection.SimpleName}'");
 
             // Gets the path to the server_settings.xml file.
             string settingsPath = ServerSection.GetFirstDocumentNamed("server_settings.xml");
@@ -258,7 +263,7 @@ namespace glowberry.common
         [SuppressMessage("ReSharper", "StringLiteralTypo")]
         private void DumpToProperties()
         {
-            Logging.Logger.Info($"Updating properties for {ServerSection.SimpleName}");
+            Logging.Logger.Info($"Updating properties for '{ServerSection.SimpleName}'");
             
             // Gets the path to the server.properties file.
             string propertiesFilepath = Path.Combine(ServerSection.SectionFullPath, "server.properties");
@@ -286,7 +291,7 @@ namespace glowberry.common
         [SuppressMessage("ReSharper", "StringLiteralTypo")]
         private void DumpToSettings()
         {
-            Logging.Logger.Info($"Updating settings for {ServerSection.SimpleName}");
+            Logging.Logger.Info($"Updating settings for '{ServerSection.SimpleName}'");
             
             // Get the path to the server_settings.xml file.
             string settingsFilepath = Path.Combine(ServerSection.SectionFullPath, "server_settings.xml");
