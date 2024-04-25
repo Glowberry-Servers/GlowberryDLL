@@ -15,7 +15,6 @@ namespace glowberry.common.background
     /// <summary>
     /// Handles the backup creation for a given running server. This thread will bind itself to a running
     /// process, and frequently check for its status, stopping only when the process does.
-    /// TODO: Make it so the user can set the limit of backups, that will delete the oldest ones.
     /// </summary>
     internal class ServerBackupHandler : IBackgroundRunner
     {
@@ -117,13 +116,13 @@ namespace glowberry.common.background
 
                 // Zips the server section into the backups folder.
                 ZipDirectory(serverSection.SectionFullPath, Path.Combine(backupsPath, backupName));
-                Logging.Logger.Info($"Backed up {serverSection.SimpleName} Server to {backupsPath}");
+                Logging.Logger.Info($"Backed up '{serverSection.SimpleName}' Server to {backupsPath}");
                 
                 CleanBackups(backupsPath);
             }
             catch (Exception e)
             {
-                Logging.Logger.Info("Failed to create server backup for server: " + serverSection.SimpleName);
+                Logging.Logger.Info("Failed to create server backup for server: '" + serverSection.SimpleName + "'");
                 Logging.Logger.Error(e);
             }
         }
@@ -158,7 +157,7 @@ namespace glowberry.common.background
                         HandleRollingBackups(backupsPath, Editor.GetFromBuffers<int>("rollingplayerdatabackups"));
 
                     ZipDirectory(section.SectionFullPath, backupFilePath);
-                    Logging.Logger.Info($"Backed up {serverSection.SimpleName}.{section.SimpleName} Playerdata to {backupsPath}");
+                    Logging.Logger.Info($"Backed up '{serverSection.SimpleName}.{section.SimpleName}' Playerdata to {backupsPath}");
                 }
                 
                 CleanBackups(backupsPath);

@@ -9,8 +9,8 @@ using glowberry.api.server;
 namespace glowberry.common.handlers
 {
     /// <summary>
-    /// This class implements all the base methods for command processing events
-    /// to be implemented by the derived classes.
+    /// This class implements all the base methods for processing server output messages,
+    /// to be worked on further or left as-is by the child classes.
     /// </summary>
     public abstract class AbstractLoggingMessageProcessing
     {
@@ -96,7 +96,7 @@ namespace glowberry.common.handlers
                 else if (typeSection.Contains("INFO")) 
                     ProcessInfoMessages(message, proc);
             }
-            catch (ArgumentOutOfRangeException) {}
+            catch (ArgumentOutOfRangeException) { }
 
             // Handle any other messages that don't fit the above criteria.
             ProcessOtherMessages(e.Data.Trim(), proc);

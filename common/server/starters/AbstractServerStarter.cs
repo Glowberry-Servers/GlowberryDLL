@@ -82,7 +82,7 @@ namespace glowberry.common.server.starters
         /// <returns>Whether or not the server was successfully started</returns>
         protected bool StartServer(Section serverSection, Process proc, ServerEditor editor)
         {
-            Logging.Logger.Info($"Starting the {serverSection.SimpleName} server...");
+            Logging.Logger.Info($"Starting the '{serverSection.SimpleName}' server...");
 
             // Sets up the process to be hidden and not create a window.
             proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;

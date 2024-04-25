@@ -1,5 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
+using glowberry.common;
 using LaminariaCore_General.common;
 using LaminariaCore_General.utils;
 using Microsoft.Win32;
@@ -39,6 +41,7 @@ public class WindowsSchedulerUtils
 
         // Check if the server is already in the scheduler. If it is, then we don't need to do anything.
         if (IsServerInScheduler(serverSection)) return true;
+        Logging.Logger.Info($"Configuring server '{serverSection.SimpleName}' to start on boot...");
 
         if (serverSection.GetFirstDocumentNamed("boot.bat") == null)
         {
@@ -51,26 +54,33 @@ public class WindowsSchedulerUtils
         {
             // Check if the task already exists. If it does, then we don't need to do anything.
             if (taskService.FindTask(taskName) != null) return true;
-            
+
             // Creates the task definition and registers it into the Windows Task Scheduler
             TaskDefinition definition = taskService.NewTask();
             definition.RegistrationInfo.Description = $"Glowberry: '{serverSection.SimpleName}' server startup task";
-            
+
             definition.Triggers.Add(new BootTrigger());
-            definition.Actions.Add(new ExecAction(BootScriptName, null, serverSection.AddSection(ScriptsSectionName).SectionFullPath));
+            definition.Actions.Add(new ExecAction(BootScriptName, null,
+                serverSection.AddSection(ScriptsSectionName).SectionFullPath));
 
             definition.Principal.LogonType = TaskLogonType.S4U;
             definition.Settings.StopIfGoingOnBatteries = false;
             definition.Settings.DisallowStartIfOnBatteries = false;
-            
+
             // Register the task under the Glowberry folder in the Windows Task Scheduler
             TaskFolder glowberryFolder = taskService.GetFolder("\\Glowberry");
             if (glowberryFolder == null)
                 glowberryFolder = taskService.RootFolder.CreateFolder("Glowberry");
-            
+
             glowberryFolder.RegisterTaskDefinition(taskName, definition);
         }
-        catch { return false;}
+        
+        catch (Exception e)
+        {
+            Logging.Logger.Error($"Failed to register server '{serverSection.SimpleName}' to the Windows Task Scheduler.");
+            Logging.Logger.Error(e, LoggingType.File);
+            return false;
+        }
 
         return true;
     }
@@ -85,12 +95,13 @@ public class WindowsSchedulerUtils
         using TaskService taskService = new TaskService();
         string taskName = $"Glowberry-{serverSection.SimpleName}-bootstart";
         string bootScriptFilepath = Path.Combine(serverSection.AddSection(ScriptsSectionName).SectionFullPath, BootScriptName);
+        Logging.Logger.Info($"Unregistering server '{serverSection.SimpleName}' from boot start...");
 
         try
         {
             // Get the glowberry task folder to delete the task from
             TaskFolder glowberryFolder = taskService.GetFolder("\\Glowberry");
-            
+
             // If the server isn't in the scheduler, then we don't need to do anything.
             if (taskService.FindTask(taskName) != null)
                 glowberryFolder.DeleteTask(taskName);
@@ -98,7 +109,12 @@ public class WindowsSchedulerUtils
             // If the boot script exists, then we can delete it.
             if (File.Exists(bootScriptFilepath)) File.Delete(bootScriptFilepath);
         }
-        catch { return false; }
+        catch (Exception e)
+        {
+            Logging.Logger.Error($"Failed to unregister server '{serverSection.SimpleName}' from the Windows Task Scheduler.");
+            Logging.Logger.Error(e, LoggingType.File);
+            return false;
+        }
 
         return true;
     }

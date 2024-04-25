@@ -45,7 +45,10 @@ namespace glowberry.common.caches
         {
             Section serverSection = Constants.FileSystem.GetFirstSectionNamed($"/servers/{serverName}");
             ServerEditor? editorCheck = Get(serverSection);
-            if (editorCheck != null) ServerEditorsCache.Remove(editorCheck);
+            if (editorCheck == null) return;
+            
+            Logging.Logger.Debug($"Removing server editor for '{serverName}' from cache.");
+            ServerEditorsCache.Remove(editorCheck);
         }
         
         /// <summary>
@@ -76,6 +79,7 @@ namespace glowberry.common.caches
             ServerEditor editor = new (serverSection);
             
             // Adds the editor to the cache and returns it.
+            Logging.Logger.Debug($"Adding server editor for '{serverSection.SimpleName}' to cache.");
             ServerEditorsCache.Add(editor);
             return editor;
         }
