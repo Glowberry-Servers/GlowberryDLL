@@ -43,7 +43,7 @@ public class WindowsSchedulerUtils
         if (IsServerInScheduler(serverSection)) return true;
         Logging.Logger.Info($"Configuring server '{serverSection.SimpleName}' to start on boot...");
 
-        if (serverSection.GetFirstDocumentNamed("boot.bat") == null)
+        if (!File.Exists(bootScriptFilepath))
         {
             // Create the .bat file to be added to the Windows Registry
             string[] command = BuildStringForStartupCommand(serverSection.SimpleName).Split('\n');
