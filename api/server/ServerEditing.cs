@@ -56,7 +56,7 @@ namespace glowberry.api.server
             Directory.Move(this.ServerSection.SectionFullPath, newServerSectionPath);
             
             // Updates the server section to the new path and updates the server editor.
-            GlobalEditorsCache.INSTANCE.Remove(this.ServerSection.SimpleName);
+            GlobalEditorsCache.INSTANCE.Remove(Editor);
             this.ServerSection = FileSystem.AddSection("servers/" + newName);
             this.Editor = GlobalEditorsCache.INSTANCE.GetOrCreate(this.ServerSection);
         }
