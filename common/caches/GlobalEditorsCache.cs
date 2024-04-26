@@ -49,6 +49,14 @@ namespace glowberry.common.caches
         }
         
         /// <summary>
+        /// Directly removes a server editor from the cache.
+        /// </summary>
+        /// <param name="editor">The editor to remove</param>
+        public void Remove(ServerEditor editor) => ServerEditorsCache.Remove(editor);
+        
+        
+        
+        /// <summary>
         /// Clears the server editors cache.
         /// </summary>
         public void Clear() => ServerEditorsCache.Clear();
