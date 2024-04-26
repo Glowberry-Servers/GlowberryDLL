@@ -15,7 +15,6 @@ namespace glowberry.common.factories
     /// <summary>
     /// This is a partial class of ServerTypeMappingsFactory, containing the actual mappings to be
     /// interacted with.
-    /// TODO: Turn this into an XML file-based mapping system... somehow.
     /// </summary>
     public partial class ServerTypeMappingsFactory
     {

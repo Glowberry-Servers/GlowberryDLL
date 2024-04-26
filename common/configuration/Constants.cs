@@ -29,7 +29,10 @@ namespace glowberry.common.configuration
             string oldSection = Path.Combine(appData, ".MCSMLauncher");
 
             if (Directory.Exists(oldSection) && !Directory.Exists(glowberryStorage))
+            {
+                Logging.Logger.Info("MCSMLauncher section found. Renaming to Glowberry.");
                 Directory.Move(oldSection, oldSection.Replace("MCSMLauncher", "Glowberry"));
+            }
 
             // Initialises the file system.
             FileSystem = new FileManager(glowberryStorage);

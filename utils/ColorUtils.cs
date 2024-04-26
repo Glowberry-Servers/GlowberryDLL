@@ -7,7 +7,8 @@ namespace glowberry.utils
     {
         /// <summary>
         /// Converts a Color object into its closest value in ConsoleColor.
-        /// I'll be straight: I have no idea how this works. This is a modified version of a SO answer.
+        /// 
+        /// I'll be straight: I have no idea how this works. This is a modified version of an SO answer.
         /// https://stackoverflow.com/questions/1988833/converting-color-to-consolecolor
         /// </summary>
         /// <param name="color">The color to be converted</param>

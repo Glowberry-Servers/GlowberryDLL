@@ -56,17 +56,17 @@ namespace glowberry.common
         /// <summary>
         /// The current logging session, based on the current date.
         /// </summary>
-        public string LoggingSession { get; } = DateTime.Now.ToString("yyyy.MM.dd.HH.mm.ss");
+        public string LoggingSession { get; } = DateTime.Now.ToString("yyyy.MM.dd");
         
         /// <summary>
         /// The minimum logging level required for the console to log.
         /// </summary>
-        public static LoggingLevel MinimumConsoleLoggingLevel { get; set; } = LoggingLevel.Debug;
+        public static LoggingLevel MinimumConsoleLoggingLevel { get; set; } = LoggingLevel.Info;
         
         /// <summary>
         /// The minimum logging level required for the file to log.
         /// </summary>
-        public static LoggingLevel MinimumFileLoggingLevel { get; set; } = LoggingLevel.Debug;
+        public static LoggingLevel MinimumFileLoggingLevel { get; set; } = LoggingLevel.Info;
         
         /// <summary>
         /// Main constructor for the logging class, initializes the logging path.

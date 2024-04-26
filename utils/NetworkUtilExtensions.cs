@@ -21,9 +21,9 @@ namespace glowberry.utils
         /// <param name="label">The label to write status updated into</param>
         public static async Task RecurrentTestAsync(Label label = default)
         {
+            Logging.Logger.Info("Waiting for the internet connection to be established...");
             while (true)
             {
-                Logging.Logger.Info(@"Checking for an internet connection...");
                 if (NetworkUtils.IsWifiConnected()) break;
                 
                 if (label != null) label.Text = @"Could not connect to the internet. Retrying...";
