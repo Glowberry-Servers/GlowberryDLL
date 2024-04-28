@@ -18,7 +18,6 @@ namespace glowberry.common
         public MinecraftVersion(string rawVersion)
         {
             Version = rawVersion.Replace("?", "0");
-            Version = rawVersion.Split('-')[0];
             Version = rawVersion.Split('.').Length is var str and < 3 && str != 1
                 ? $"{Version}.0"
                 : Version;
@@ -33,7 +32,7 @@ namespace glowberry.common
         /// Checks if the version is a semantic version. This is a version that is in the format of "XX.XX.XX".
         /// </summary>
         /// <param name="version">The version to check</param>
-        /// <returns>Whether or not the version is semantic</returns>
+        /// <returns>Whether the version is semantic or not</returns>
         public static bool isSemanticVersion(string version) => Regex.IsMatch(version, @"\d{2}\.\d{2}(\.\d{2})?");
 
         /// <summary>
@@ -57,10 +56,13 @@ namespace glowberry.common
             // If the versions are the same, then they are equal.
             if (Version == other.Version) return 0;
 
+            string currentComparisonVersion = Version.Split('-')[0];
+            string otherComparisonVersion = other.Version.Split('-')[0];
+
             // Tries to compare the two version with the version API.
             try
             {
-                return new Version(Version).CompareTo(new Version(other.Version));
+                return new Version(currentComparisonVersion).CompareTo(new Version(otherComparisonVersion));
             }
             
             catch (SystemException) { } // There was an issue, needs further evaluation.
@@ -68,7 +70,7 @@ namespace glowberry.common
             // If the current version is the issue, then this one follows the other one.
             try
             {
-                Version _ = new(Version);
+                Version _ = new(currentComparisonVersion);
             }
             catch (SystemException)
             {
