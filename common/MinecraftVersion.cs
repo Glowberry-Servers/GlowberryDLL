@@ -18,6 +18,7 @@ namespace glowberry.common
         public MinecraftVersion(string rawVersion)
         {
             Version = rawVersion.Replace("?", "0");
+            Version = rawVersion.Split('-')[0];
             Version = rawVersion.Split('.').Length is var str and < 3 && str != 1
                 ? $"{Version}.0"
                 : Version;
@@ -62,19 +63,19 @@ namespace glowberry.common
                 return new Version(Version).CompareTo(new Version(other.Version));
             }
             
-            catch (ArgumentException) { } // There was an issue, needs further evaluation.
+            catch (SystemException) { } // There was an issue, needs further evaluation.
 
             // If the current version is the issue, then this one follows the other one.
             try
             {
                 Version _ = new(Version);
             }
-            catch (ArgumentException)
+            catch (SystemException)
             {
                 return -1;
             }
 
-            // If the other version is the issue, this this one precedes it.
+            // If the other version is the issue, this one precedes it.
             return 1;
         }
     }
