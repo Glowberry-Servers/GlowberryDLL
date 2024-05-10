@@ -139,7 +139,7 @@ namespace glowberry.api.server
         public bool IsRunning()
         {
             Process proc = this.GetServerProcess();
-            return proc is { HasExited: false, ProcessName: "java" or "cmd" };
+            return proc is { ProcessName: "java" or "cmd" };
         }
 
         /// <summary>
