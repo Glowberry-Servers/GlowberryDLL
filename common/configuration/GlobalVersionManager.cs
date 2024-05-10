@@ -13,9 +13,9 @@ namespace glowberry.common.configuration
         /// </summary>
         private static Dictionary<string, string> VersionMappings { get; } = new ()
         {
-            {"launcher", "1.5.0"},
+            {"launcher", "1.5.1"},
             {"web", "1.0.0"},
-            {"dll", "1.2.2"}
+            {"dll", "1.2.3"}
         };
         
         /// <summary>
