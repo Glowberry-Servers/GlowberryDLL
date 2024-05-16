@@ -22,7 +22,7 @@ namespace glowberry.common.configuration
         /// Gets the version for the specified program based on the version mappings.
         /// </summary>
         /// <param name="program">The program name to get the version for</param>
-        /// <returns></returns>
+        /// <returns>The version assigned for the program</returns>
         public static string GetVersion(string program) => VersionMappings[program];
     }
 }

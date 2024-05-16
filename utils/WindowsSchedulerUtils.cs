@@ -157,7 +157,7 @@ public class WindowsSchedulerUtils
                 )
 
                 echo Wi-Fi connection detected. Running Glowberry...
-                {Directory.GetCurrentDirectory()}\glowberry.exe start --server {serverName}
+                "{Directory.GetCurrentDirectory()}\glowberry.exe" start --server {serverName}
                 """.Trim();
     }
 }
