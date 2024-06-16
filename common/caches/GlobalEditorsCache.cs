@@ -43,7 +43,7 @@ namespace glowberry.common.caches
         /// <param name="serverName">The name of the server to remove</param>
         public void Remove(string serverName)
         {
-            Section serverSection = Constants.FileSystem.GetFirstSectionNamed($"/servers/{serverName}");
+            Section serverSection = Constants.FileSystem.AddSection($"/servers/{serverName}");
             ServerEditor? editorCheck = Get(serverSection);
             if (editorCheck == null) return;
             

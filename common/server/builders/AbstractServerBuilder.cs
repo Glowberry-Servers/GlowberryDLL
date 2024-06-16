@@ -199,7 +199,7 @@ namespace glowberry.common.server.builders
         {
             List<string> directories = filepath.Split(Path.DirectorySeparatorChar).ToList();
             string serverName = directories[directories.IndexOf("servers") + 1];
-            return FileSystem.GetFirstSectionNamed("servers/" + serverName);
+            return FileSystem.AddSection("servers/" + serverName);
         }
 
         /// <summary>
@@ -270,7 +270,7 @@ namespace glowberry.common.server.builders
                 if (!File.Exists(serverJarPath)) return false;
 
                 // If the server.jar file exists, copy it to the server's directory and return true
-                File.Copy(serverJarPath, Path.Combine(FileSystem.GetFirstSectionNamed($"servers/{serverName}").SectionFullPath, "server.jar"), true);
+                File.Copy(serverJarPath, Path.Combine(FileSystem.AddSection($"servers/{serverName}").SectionFullPath, "server.jar"), true);
                 return true;
             }
             

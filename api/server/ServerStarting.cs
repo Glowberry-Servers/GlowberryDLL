@@ -26,7 +26,7 @@ namespace glowberry.api.server
         /// <param name="serverName">The name of the server to operate on</param>
         public ServerStarting(string serverName)
         {
-            Section serverSection = FileSystem.GetFirstSectionNamed(serverName);
+            Section serverSection = FileSystem.AddSection(serverName);
             this.EditingAPI = new ServerAPI().Editor(serverSection.SimpleName);
         }
 

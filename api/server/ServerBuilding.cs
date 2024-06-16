@@ -99,7 +99,7 @@ namespace glowberry.api.server
         public async Task Run(MessageProcessingOutputHandler outputHandler, string javaRuntime)
         {
             // Deletes the server if it already exists.
-            Section allServersSection = FileSystem.GetFirstSectionNamed("servers");
+            Section allServersSection = FileSystem.AddSection("servers");
             allServersSection.RemoveSection(this.ServerName);
             
             // Creates the server section again.

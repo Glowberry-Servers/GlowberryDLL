@@ -63,7 +63,7 @@ namespace glowberry.api
         {
             // Logs the initial assets and gets the essential resources to use
             Logging.Logger.Info("Downloading initial assets...");
-            Section assets = FileSystem.GetFirstSectionNamed("assets");
+            Section assets = FileSystem.AddSection("assets");
             List<string> config = ConfigurationManager.AppSettings.AllKeys.Where(x => x.StartsWith("Asset")).ToList();
             
             if (AreAssetsOK(assets, config)) return;
@@ -82,7 +82,7 @@ namespace glowberry.api
                 string settingKey = config[index];
 
                 string filename = Path.GetFileName(ConfigurationManager.AppSettings.Get(settingKey));
-                string filepath = Path.Combine(FileSystem.GetFirstSectionNamed("assets").SectionFullPath, filename);
+                string filepath = Path.Combine(FileSystem.AddSection("assets").SectionFullPath, filename);
 
                 if (label != null) label.Text = $@"Downloading Assets... ({filename})";
                 await FileDownloader.DownloadFileAsync(filepath, ConfigurationManager.AppSettings.Get(settingKey));

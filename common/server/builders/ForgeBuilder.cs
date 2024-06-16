@@ -44,7 +44,7 @@ namespace glowberry.common.server.builders
             // Gets the server section from the path of the jar being run, and gets the name of the server from it
             List<string> directories = serverInstallerPath.Split(Path.DirectorySeparatorChar).ToList();
             string serverName = directories[directories.IndexOf("servers") + 1];
-            Section serverSection = FileSystem.GetFirstSectionNamed("servers/" + serverName);
+            Section serverSection = FileSystem.AddSection("servers/" + serverName);
 
             // Creates the process that will build the server
             Process forgeBuildingProcess = ProcessUtils.CreateProcess($"\"{javaRuntime}\\bin\\java\"",

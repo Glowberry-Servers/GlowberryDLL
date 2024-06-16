@@ -48,7 +48,7 @@ namespace glowberry.api.server
         {
             this.ServerName = serverName;
             
-            Section serverSection = FileSystem.GetFirstSectionNamed(this.ServerName);
+            Section serverSection = FileSystem.AddSection(this.ServerName);
             this.Editor = GlobalEditorsCache.INSTANCE.GetOrCreate(serverSection);
         }
         
@@ -148,7 +148,7 @@ namespace glowberry.api.server
         public async void KillServerProcess()
         {
             // Ensures that the server settings file is not being written to before killing the process.
-            Section serverSection = FileSystem.GetFirstSectionNamed(this.ServerName);
+            Section serverSection = FileSystem.AddSection(this.ServerName);
             string settingsPath = serverSection.GetFirstDocumentNamed("server_settings.xml");
             using var _ = await FileUtils.WaitForFileAsync(settingsPath);
             

@@ -34,7 +34,7 @@ namespace glowberry.api.server
         /// <param name="serverName">The server name that will be used to identify the server to edit</param>
         public ServerEditing(string serverName)
         {
-            Section serverSection = FileSystem.GetFirstSectionNamed(serverName);
+            Section serverSection = FileSystem.AddSection(serverName);
             this.Editor = GlobalEditorsCache.INSTANCE.GetOrCreate(serverSection);
             this.ServerSection = serverSection;
         }
