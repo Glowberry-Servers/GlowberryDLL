@@ -126,12 +126,14 @@
       <PackageReference Include="WindowsFirewallHelper" Version="2.2.0.86" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-         Other similar extension points exist, see Microsoft.Common.targets.
-    <Target Name="BeforeBuild">
-    </Target>
+
     <Target Name="AfterBuild">
+        <ItemGroup>
+            <ResourceFiles Include="$(OutputPath)\**\Microsoft.Data.SqlClient.resources.dll"/>
+            <SchedulerFiles Include="$(OutputPath)\**\Microsoft.Win32.TaskScheduler.resources.dll"/>
+        </ItemGroup>
+        <RemoveDir Directories="@(ResourceFiles->'%(RootDir)%(Directory)')" />
+        <RemoveDir Directories="@(SchedulerFiles->'%(RootDir)%(Directory)')" />
     </Target>
-    -->
 
 </Project>

@@ -73,7 +73,7 @@ namespace glowberry.common
         /// </summary>
         private Logging()
         {
-            LoggingFilePath = Path.Combine(FileSystem.GetFirstSectionNamed("logs").SectionFullPath, LoggingSession + ".log");
+            LoggingFilePath = Path.Combine(FileSystem.AddSection("logs").SectionFullPath, LoggingSession + ".log");
         }
 
         /// <summary>
