@@ -12,7 +12,7 @@ namespace glowberry.common.server.builders
         /// Main constructor for the FabricBuilder class. Defines the start-up arguments for the server.
         /// </summary>
         /// <param name="outputHandler">The output system to use while logging the messages.</param>
-        public FabricBuilder(MessageProcessingOutputHandler outputHandler) : base("-jar %SERVER_JAR% nogui", outputHandler)
+        public FabricBuilder(MessageProcessingOutputHandler outputHandler) : base("-jar \"%SERVER_JAR%\" nogui", outputHandler)
         {
         }
 

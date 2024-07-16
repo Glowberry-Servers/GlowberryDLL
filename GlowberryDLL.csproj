@@ -57,7 +57,6 @@
         <Compile Include="common\caches\GlobalEditorsCache.cs" />
         <Compile Include="common\caches\QuickAccessEditorsCache.cs" />
         <Compile Include="common\configuration\Constants.cs" />
-        <Compile Include="common\configuration\GlobalVersionManager.cs" />
         <Compile Include="common\factories\MappedServerTypes.cs" />
         <Compile Include="common\factories\ServerTypeMappingsFactory.cs" />
         <Compile Include="common\handlers\AbstractLoggingMessageProcessing.cs" />

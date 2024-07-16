@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net.Mime;
+using System.Reflection;
 using glowberry.common.models;
 using LaminariaCore_General.common;
 using LaminariaCore_General.utils;
@@ -37,5 +38,11 @@ namespace glowberry.common.configuration
             // Initialises the file system.
             FileSystem = new FileManager(glowberryStorage);
         }
+        
+        /// <summary>
+        /// Gets the version of the DLL.
+        /// </summary>
+        /// <returns>The file version of the DLL</returns>
+        public static string GetDllVersion() => Assembly.GetExecutingAssembly().GetName().Version.ToString(); 
     }
 }
