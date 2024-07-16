@@ -98,6 +98,7 @@
         <Compile Include="requests\spigot\SpigotRequestParser.cs" />
         <Compile Include="utils\ColorUtils.cs" />
         <Compile Include="utils\FirewallUtils.cs" />
+        <Compile Include="utils\JavaUtils.cs" />
         <Compile Include="utils\NetworkUtilExtensions.cs" />
         <Compile Include="utils\PermissionUtils.cs" />
         <Compile Include="utils\WindowsSchedulerUtils.cs" />
@@ -111,9 +112,11 @@
       <PackageReference Include="HtmlAgilityPack" Version="1.11.55" />
       <PackageReference Include="LaminariaCore-General" Version="1.1.2" />
       <PackageReference Include="LaminariaCore-Winforms" Version="1.0.1" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="Open.NAT" Version="2.1.0" />
       <PackageReference Include="System.CodeDom" Version="8.0.0" />
       <PackageReference Include="System.IO" Version="4.3.0" />
+      <PackageReference Include="System.IO.Compression.ZipFile" Version="4.3.0" />
       <PackageReference Include="System.Management" Version="8.0.0" />
       <PackageReference Include="System.Net.Http" Version="4.3.4" />
       <PackageReference Include="System.Runtime" Version="4.3.1" />
