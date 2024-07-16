@@ -16,7 +16,7 @@ namespace glowberry.common.server.builders
         /// Main constructor for the SpigotBuilder class. Defines the start-up arguments for the server.
         /// </summary>
         /// <param name="outputHandler">The output system to use while logging the messages.</param>
-        public SpigotBuilder(MessageProcessingOutputHandler outputHandler) : base("-DIReallyKnowWhatIAmDoingISwear=true -jar %SERVER_JAR% nogui", outputHandler)
+        public SpigotBuilder(MessageProcessingOutputHandler outputHandler) : base("-DIReallyKnowWhatIAmDoingISwear=true -jar \"%SERVER_JAR%\" nogui", outputHandler)
         {
         }
 

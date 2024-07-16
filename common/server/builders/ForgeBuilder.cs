@@ -27,7 +27,7 @@ namespace glowberry.common.server.builders
         /// </summary>
         /// <param name="outputHandler">The output system to use while logging the messages.</param>
         public ForgeBuilder(MessageProcessingOutputHandler outputHandler) : base(
-            "-jar -Xmx1024M -Xms1024M %SERVER_JAR% nogui", outputHandler)
+            "-jar -Xmx1024M -Xms1024M \"%SERVER_JAR%\" nogui", outputHandler)
         {
             
         }

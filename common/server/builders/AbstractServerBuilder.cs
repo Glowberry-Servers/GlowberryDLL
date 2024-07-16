@@ -1,4 +1,4 @@
-﻿ using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -30,6 +30,13 @@ namespace glowberry.common.server.builders
     public abstract class AbstractServerBuilder : AbstractLoggingMessageProcessing
     {
         /// <summary>
+        /// The startup arguments to be used by the methods that start up the server.
+        /// Variables:
+        /// > %SERVER_JAR%: The path to the server.jar file
+        /// </summary>
+        protected string StartupArguments { get ; private set; }
+        
+        /// <summary>
         /// Main constructor for the AbstractServerBuilder class, sets the startup arguments
         /// to be used in the server startups, through the child classes.
         /// </summary>
@@ -44,13 +51,6 @@ namespace glowberry.common.server.builders
             SpecialErrors.Add("FML appears to be missing any signature data");
             SpecialErrors.Add("Failed to load");
         }
-
-        /// <summary>
-        /// The startup arguments to be used by the methods that start up the server.
-        /// Variables:
-        /// > %SERVER_JAR%: The path to the server.jar file
-        /// </summary>
-        protected string StartupArguments { get; private set; }
 
         /// <summary>
         /// Wraps the AbstractServerBuilder#InternalBuild method so that any exceptions are caught, logged, and
