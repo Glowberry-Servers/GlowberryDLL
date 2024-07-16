@@ -123,7 +123,7 @@ namespace glowberry.common
         /// <param name="loggingType">The type of logging to be performed</param>
         public string Error(Exception err, LoggingType loggingType = LoggingType.All)
         {
-            return _internalLog(err.Message + '\n' + err.StackTrace, LoggingLevel.Error, loggingType);
+            return _internalLog(err.ToString() + '\n' + err.StackTrace, LoggingLevel.Error, loggingType);
         }
         
         /// <summary>
@@ -143,7 +143,7 @@ namespace glowberry.common
         /// <param name="loggingType">The type of logging to be performed</param>
         public string Fatal(Exception err, LoggingType loggingType = LoggingType.All)
         {
-            return _internalLog(err.Message + '\n' + err.StackTrace, LoggingLevel.Fatal, loggingType);
+            return _internalLog(err.ToString() + '\n' + err.StackTrace, LoggingLevel.Fatal, loggingType);
         }
 
         /// <summary>
