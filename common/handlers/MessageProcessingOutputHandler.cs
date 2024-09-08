@@ -97,7 +97,7 @@ namespace glowberry.common.handlers
                 output.SelectionColor = Color.Black;
             }
 
-            invoker?.Invoke((MethodInvoker) Process);
+            invoker?.Invoke((MethodInvoker)Process);
         }
     }
 }

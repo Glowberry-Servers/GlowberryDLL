@@ -112,6 +112,11 @@ namespace glowberry.common.models
         public string JavaRuntimePath { get; set; } = "java";
 
         /// <summary>
+        /// Whether this server was ever set on "auto-detect"
+        /// </summary>
+        public bool AutoDetectHint { get; set; } = false;
+
+        /// <summary>
         /// The currently running server process. If the server is not running, this will be -1.
         /// This is used to check if the server is currently running or not, and is only meant to be
         /// interacted with programatically.

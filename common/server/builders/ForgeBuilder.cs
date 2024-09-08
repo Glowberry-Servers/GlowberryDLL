@@ -9,6 +9,8 @@ using glowberry.api.server;
 using glowberry.common.handlers;
 using glowberry.common.models;
 using glowberry.extensions;
+using glowberry.requests.content;
+using glowberry.utils;
 using LaminariaCore_General.common;
 using static glowberry.common.configuration.Constants;
 
@@ -122,12 +124,23 @@ namespace glowberry.common.server.builders
             // Due to how forge works, we need to generate a run.bat file to run the forge.
             Section serverSection = GetSectionFromFile(serverJarPath);
             serverSection.AddDocument("server.properties"); // Adds the server properties just in case
-
-            // Gets the java runtime and creates the run command from it
             ServerInformation info = editingApi.GetServerInformation();
-            string runCommand = $"\"{info.JavaRuntimePath}\\bin\\java\" {StartupArguments}";
+            
+            // Re-checks java version and tries to download the correct jdk. This is because the installer
+            // Doesn't always match up version-wise with the server.
+            if (info.AutoDetectHint)
+            {
+                string forgeFilePath = serverSection.GetAllDocuments().FirstOrDefault(x => x.EndsWith(".jar")) ??
+                                       serverJarPath;
+                
+                info.JavaRuntimePath = await JavaUtils.HandleAutoJavaDetection(forgeFilePath, OutputSystem);
+                
+            }
+
+            editingApi.UpdateServerSettings(info.ToDictionary());
 
             // Creates the run.bat file if it doesn't already exist, with simple running params
+            string runCommand = $"\"{info.JavaRuntimePath}\\bin\\java\" {StartupArguments}";
             string runFilepath = Path.Combine(serverSection.SectionFullPath, "run.bat");
 
             if (!File.Exists(runFilepath))
@@ -135,9 +148,9 @@ namespace glowberry.common.server.builders
 
             // Gets the run.bat file and adds nogui to the end of the java command
             List<string> lines = FileUtils.ReadFromFile(runFilepath);
-            int index = lines.IndexOf(lines.FirstOrDefault(x => x.StartsWith("java")));
+            int index = lines.IndexOf(lines.LastOrDefault(x => x.StartsWith("java")));
             int commandIndex = index != -1 ? index : 0;
-
+            
             if (!lines[commandIndex].Contains("nogui"))
             {
                 // Removes the pause statement if there is one
@@ -166,7 +179,7 @@ namespace glowberry.common.server.builders
             }
 
             // Handles the processing of the STDOUT and STDERR outputs, changing the termination code accordingly.
-            proc.OutputDataReceived += (sender, e) => RedirectMessageProcessing(sender, e, proc, editingApi.GetServerName());
+            ProcessInfoMessages("The output for the server construction is hidden in Forge for optimisation purposes. Hold tight!", proc);
             proc.ErrorDataReceived += (sender, e) => RedirectMessageProcessing(sender, e, proc, editingApi.GetServerName());
 
             // Waits for the termination of the process by the OutputDataReceived event or ErrorDataReceived event.

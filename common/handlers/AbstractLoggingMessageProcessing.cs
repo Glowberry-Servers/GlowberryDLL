@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using LaminariaCore_General.utils;
 using glowberry.api.server;
 
@@ -57,9 +58,12 @@ namespace glowberry.common.handlers
                 this.InteractionsAPI = new ServerAPI().Interactions(serverName);
                 this.InteractionsAPI.AddToOutputBuffer(e.Data);
             }
-            catch { Logging.Logger.Warn("Tried to add to output buffer while directory is gone."); }
+            catch
+            {
+                Logging.Logger.Warn("Tried to add to output buffer while directory is gone.");
+            }
 
-            this.ProcessMergedData(sender, e, proc);  // Processes the data in the output system
+            this.ProcessMergedData(sender, e, proc); // Processes the data in the output system
         }
         
         /// <summary>

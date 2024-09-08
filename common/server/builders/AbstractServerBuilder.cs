@@ -118,7 +118,7 @@ namespace glowberry.common.server.builders
             string serverInstallerJar = serverSection.GetAllDocuments().FirstOrDefault(x => x.Contains("server") && x.EndsWith(".jar"));
             
             if (javaRuntime.StartsWith("Auto-Detect")) 
-                javaRuntime = await DownloadOrGetJavaRuntime(serverInstallerJar);
+                javaRuntime = await JavaUtils.HandleAutoJavaDetection(serverInstallerJar, OutputSystem);
             
             string serverJarPath = await InstallServer(serverInstallerJar, javaRuntime);
 
@@ -132,6 +132,7 @@ namespace glowberry.common.server.builders
             info.ServerBackupsPath = serverSection.AddSection("backups/server").SectionFullPath;
             info.PlayerdataBackupsPath = serverSection.AddSection("backups/playerdata").SectionFullPath;
             info.JavaRuntimePath = javaRuntime;
+            info.AutoDetectHint = true;
             
             // Updates and flushes the buffers
             editingApi.UpdateServerSettings(info.ToDictionary());
@@ -177,7 +178,7 @@ namespace glowberry.common.server.builders
             }
 
             // Handles the processing of the STDOUT and STDERR outputs, changing the termination code accordingly.
-            proc.OutputDataReceived += (sender, e) => RedirectMessageProcessing(sender, e, proc, editingApi.GetServerName());
+            proc.OutputDataReceived += async (sender, e) => RedirectMessageProcessing(sender, e, proc, editingApi.GetServerName());
             proc.ErrorDataReceived += (sender, e) => RedirectMessageProcessing(sender, e, proc, editingApi.GetServerName());
 
             // Waits for the termination of the process by the OutputDataReceived event or ErrorDataReceived event.
@@ -309,67 +310,6 @@ namespace glowberry.common.server.builders
                 File.Copy(filepath, serverJarPath, true);
             }
             catch (IOException e) { Logging.Logger.Error(e); }
-        }
-
-        /// <summary>
-        /// Checks if the Java runtime is installed in the auto detected java runtimes list
-        /// or downloads it if it isn't.
-        /// </summary>
-        /// <param name="serverJarPath">The path to the server.jar jar file</param>
-        /// <returns>The path to the Java runtime</returns>
-        private async Task<string> DownloadOrGetJavaRuntime(string serverJarPath)
-        {
-            // Gets the java version that the server.jar file is running on
-            int majorVersion = JavaUtils.DetectMajorVersion(serverJarPath);
-            int javaVersion = JavaUtils.GetJavaVersion(majorVersion);
-            javaVersion = javaVersion < 8 ? 8 : javaVersion;
-            
-            OutputSystem.Write(Logging.Logger.Info($"Detected server-compiled Java version: {javaVersion}, major {majorVersion}") + Environment.NewLine);
-            
-            // Checks if the java runtime is already installed in the auto-detected runtimes
-            Section javaRuntimes = FileSystem.AddSection("runtime");
-            Section runtimePath = javaRuntimes.GetFirstSectionNamed($"jdk-{javaVersion}");
-            if (runtimePath != null) return runtimePath.SectionFullPath;
-            
-            // Deletes any "download.zip" files in the runtime folder
-            string temporaryDownloadPath = Path.Combine(javaRuntimes.SectionFullPath, "download.zip");
-            if (File.Exists(temporaryDownloadPath)) File.Delete(temporaryDownloadPath);
-            
-            // If the runtime isn't installed, download it and return the path
-            string link = await JavaUtils.GetClosestBuildDownloadLink(javaVersion);
-            OutputSystem.Write(Logging.Logger.Info($"Obtaining the Oracle Java Runtime: {link}") + Environment.NewLine);
-            
-            string downloadPath = Path.Combine(javaRuntimes.SectionFullPath, $"download.zip");
-            await FileDownloader.DownloadFileAsync(downloadPath, link);
-            
-            // Extracts the zip file to the runtime folder
-            string runtimeFolderPath = Path.Combine(javaRuntimes.SectionFullPath, $"jdk-{javaVersion}");
-            OutputSystem.Write(Logging.Logger.Info($"Extracting Java {javaVersion} resources to {runtimeFolderPath}") + Environment.NewLine);
-            ZipFile.ExtractToDirectory(downloadPath, runtimeFolderPath);
-            
-            string[] directories = Directory.GetDirectories(runtimeFolderPath);
-            
-            if (directories.Length == 1)
-            {
-                // Ensures a one-level deep folder structure for the java files
-                foreach (string file in Directory.GetFiles(directories[0]))
-                {
-                    OutputSystem.Write(Logging.Logger.Info($"Sorting {file} to {runtimeFolderPath}") + Environment.NewLine);
-                    File.Move(file, Path.Combine(runtimeFolderPath, Path.GetFileName(file)));
-                }
-
-                // Ensures a one-level deep folder structure for the java directories
-                foreach (string dir in Directory.GetDirectories(directories[0]))
-                {
-                    OutputSystem.Write(Logging.Logger.Info($"Sorting {dir} to {runtimeFolderPath}") + Environment.NewLine);
-                    Directory.Move(dir, Path.Combine(runtimeFolderPath, Path.GetFileName(dir)));
-                }
-
-                Directory.Delete(directories[0]);
-            }
-            
-            File.Delete(downloadPath);
-            return runtimeFolderPath;
         }
         
         /// <summary>
