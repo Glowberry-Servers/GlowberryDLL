@@ -9,6 +9,8 @@ using glowberry.api.server;
 using glowberry.common.handlers;
 using glowberry.common.models;
 using glowberry.extensions;
+using glowberry.requests.content;
+using glowberry.utils;
 using LaminariaCore_General.common;
 using static glowberry.common.configuration.Constants;
 
@@ -51,7 +53,7 @@ namespace glowberry.common.server.builders
                     $" -jar {serverInstallerPath} --installServer", serverSection.SectionFullPath);
 
             // Set the output and error data handlers
-            forgeBuildingProcess.OutputDataReceived += (sender, e) => RedirectMessageProcessing(sender, e, forgeBuildingProcess, serverName);
+            OutputSystem.Write("The output for the server construction is hidden in Forge for optimisation purposes. Hold tight!" + Environment.NewLine);
             forgeBuildingProcess.ErrorDataReceived += (sender, e) => RedirectMessageProcessing(sender, e, forgeBuildingProcess, serverName);
             TerminationCode = 0;
 
@@ -122,37 +124,46 @@ namespace glowberry.common.server.builders
             // Due to how forge works, we need to generate a run.bat file to run the forge.
             Section serverSection = GetSectionFromFile(serverJarPath);
             serverSection.AddDocument("server.properties"); // Adds the server properties just in case
-
-            // Gets the java runtime and creates the run command from it
             ServerInformation info = editingApi.GetServerInformation();
-            string runCommand = $"\"{info.JavaRuntimePath}\\bin\\java\" {StartupArguments}";
+            
+            // Re-checks java version and tries to download the correct jdk. This is because the installer
+            // Doesn't always match up version-wise with the server.
+            if (info.AutoDetectHint)
+            {
+                string forgeFilePath = serverSection.GetAllDocuments().FirstOrDefault(x => x.EndsWith(".jar")) ??
+                                       serverJarPath;
+                
+                info.JavaRuntimePath = await JavaUtils.HandleAutoJavaDetection(forgeFilePath, OutputSystem);
+            }
+
+            editingApi.UpdateServerSettings(info.ToDictionary());
 
             // Creates the run.bat file if it doesn't already exist, with simple running params
+            string runCommand = $"\"{info.JavaRuntimePath}\\bin\\java\" {StartupArguments}";
             string runFilepath = Path.Combine(serverSection.SectionFullPath, "run.bat");
 
             if (!File.Exists(runFilepath))
                 File.WriteAllText(runFilepath, runCommand.Replace("%SERVER_JAR%", serverJarPath));
 
-            // Gets the run.bat file and adds nogui to the end of the java command
+            // Gets the run.bat file and removed all the comment lines
             List<string> lines = FileUtils.ReadFromFile(runFilepath);
-            int index = lines.IndexOf(lines.FirstOrDefault(x => x.StartsWith("java")));
-            int commandIndex = index != -1 ? index : 0;
+            lines.RemoveAll(x => x.StartsWith("REM") || x.StartsWith("pause"));
+            FileUtils.DumpToFile(runFilepath, lines);
 
-            if (!lines[commandIndex].Contains("nogui"))
+            string fileText = File.ReadAllText(runFilepath);
+            
+            if (!fileText.Contains("nogui"))
             {
-                // Removes the pause statement if there is one
-                if (lines.Count > 0 && lines[lines.Count - 1] == "pause") lines.RemoveAt(lines.Count - 1);
-
                 // If the bat file was generated, there's a '%*' that needs to be replaced instead of just
                 // adding nogui to the end.
-                lines[commandIndex] = lines[commandIndex].Contains("%*")
-                    ? lines[commandIndex].Replace("%*", "nogui %*")
-                    : lines[commandIndex] + " nogui";
+                fileText = fileText.Contains("%*")
+                    ? fileText.Replace("%*", "nogui %*")
+                    : fileText + " nogui";
 
-                lines[commandIndex] = lines[commandIndex].Replace("@user_jvm_args.txt", "-Xms1024M -Xmx1024M")
+                fileText = fileText.Replace("@user_jvm_args.txt", "-Xms1024M -Xmx1024M")
                     .Replace("java", $"\"{info.JavaRuntimePath}\\bin\\java\"");
                 
-                FileUtils.DumpToFile(runFilepath, lines);
+                File.WriteAllText(runFilepath, fileText);
             }
 
             // Creates the process to be run
@@ -188,10 +199,10 @@ namespace glowberry.common.server.builders
             TerminationCode = -1;
             
             // Sneakily re-formats the -Xmx and -Xms arguments to be in a template format
-            lines[commandIndex] = lines[commandIndex].Replace($"\"{info.JavaRuntimePath}\\bin\\java\"", "%JAVA%");
-            lines[commandIndex] = lines[commandIndex].Replace("-Xms1024M", "-Xms%RAM%M");
-            lines[commandIndex] = lines[commandIndex].Replace("-Xmx1024M", "-Xmx%RAM%M");
-            FileUtils.DumpToFile(runFilepath, lines);
+            fileText = fileText.Replace($"\"{info.JavaRuntimePath}\\bin\\java\"", "%JAVA%");
+            fileText = fileText.Replace("-Xms1024M", "-Xms%RAM%M");
+            fileText = fileText.Replace("-Xmx1024M", "-Xmx%RAM%M");
+            File.WriteAllText(runFilepath, fileText);
             return 0;
         }
     }
