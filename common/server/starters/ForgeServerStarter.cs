@@ -61,7 +61,7 @@ namespace glowberry.common.server.starters
             ServerInformation info = editor.GetServerInformation();
             
             // Gets the template line from the run.bat file.
-            string templateLine = lines.Find(line => line.StartsWith("%JAVA%"));
+            string templateLine = lines.FindLast(line => line.StartsWith("%JAVA%"));
             if (templateLine == null) throw new InvalidDataException("run.bat file is invalid");
 
             // Decides whether to use the GUI or not based on the server information.
