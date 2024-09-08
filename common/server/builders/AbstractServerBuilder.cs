@@ -116,15 +116,18 @@ namespace glowberry.common.server.builders
             
             // Gets the server.jar file path and installs the server
             string serverInstallerJar = serverSection.GetAllDocuments().FirstOrDefault(x => x.Contains("server") && x.EndsWith(".jar"));
-            
-            if (javaRuntime.StartsWith("Auto-Detect")) 
-                javaRuntime = await JavaUtils.HandleAutoJavaDetection(serverInstallerJar, OutputSystem);
-            
-            string serverJarPath = await InstallServer(serverInstallerJar, javaRuntime);
 
-            // Initialises the editor and updates the server settings file
+            // Initialises the editor and gets the information object
             ServerEditing editingApi = new ServerAPI().Editor(serverSection.SimpleName);
             ServerInformation info = editingApi.GetServerInformation();
+            
+            if (javaRuntime.StartsWith("Auto-Detect"))
+            {
+                javaRuntime = await JavaUtils.HandleAutoJavaDetection(serverInstallerJar, OutputSystem);
+                info.AutoDetectHint = true;
+            }
+
+            string serverJarPath = await InstallServer(serverInstallerJar, javaRuntime);
 
             // Updates the server information with critical information about the server
             info.Type = serverType;
@@ -132,12 +135,11 @@ namespace glowberry.common.server.builders
             info.ServerBackupsPath = serverSection.AddSection("backups/server").SectionFullPath;
             info.PlayerdataBackupsPath = serverSection.AddSection("backups/playerdata").SectionFullPath;
             info.JavaRuntimePath = javaRuntime;
-            info.AutoDetectHint = true;
             
             // Updates and flushes the buffers
             editingApi.UpdateServerSettings(info.ToDictionary());
-
-
+            
+            
             // Generates the EULA file (or agrees to it if it already exists, as a failsafe)
             if (GenerateEula(serverSection) == 1)
             {
