@@ -33,7 +33,7 @@ namespace glowberry.common
         /// </summary>
         /// <param name="version">The version to check</param>
         /// <returns>Whether the version is semantic or not</returns>
-        public static bool isSemanticVersion(string version) => Regex.IsMatch(version, @"\d{2}\.\d{2}(\.\d{2})?");
+        public static bool isSemanticVersion(string version) => Regex.IsMatch(version, @"^\d+\.\d+(\.\d+)?$");
 
         /// <summary>
         /// Compares the current instance with another object of the same type and returns an integer

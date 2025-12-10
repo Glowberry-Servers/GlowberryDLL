@@ -50,6 +50,7 @@ namespace glowberry.common.server.builders
             SpecialErrors.Add("Cannot read the array length");
             SpecialErrors.Add("FML appears to be missing any signature data");
             SpecialErrors.Add("Failed to load");
+            SpecialErrors.Add("PDH");
         }
 
         /// <summary>

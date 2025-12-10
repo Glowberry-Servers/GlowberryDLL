@@ -68,9 +68,9 @@ namespace glowberry.api.server
         /// <summary>
         /// Verifies that the information provided is valid and can be used to build a server.
         /// </summary>
-        /// <param name="strict">Whether or not to perform strict validation. If true, will enable checking for the version and type of the server.</param>
+        /// <param name="relaxed">Whether or not to perform a relaxed validation. If true, will disable checking for the version and type of the server.</param>
         /// <exception cref="ArgumentException">Occurs when any part of the information provided is not fit to build a server.</exception>
-        public void VerifyInformation(bool strict = false)
+        public void VerifyInformation(bool relaxed = false)
         {
             if (this.ServerName.ToList().Any(Path.GetInvalidPathChars().Contains) || this.ServerName.Contains(' '))
                 throw new ArgumentException(@"Invalid characters in server name.");
@@ -81,12 +81,12 @@ namespace glowberry.api.server
             if (this.ServersSection.GetAllSections().Any(x => x.SimpleName.ToLower().Equals(this.ServerName.ToLower())))
                 throw new ArgumentException(@"A server with that name already exists.");
 
-            // Stops here if strict validation is enabled.
-            if (strict) return;  
-            
-            if (MinecraftVersion.isSemanticVersion(this.ServerVersion))
+            // Stops here if relaxed validation is enabled.
+            if (relaxed) return;
+
+            if (!MinecraftVersion.isSemanticVersion(this.ServerVersion))
                 throw new ArgumentException(@"Invalid server version.");
-            
+
             if (new ServerTypeMappingsFactory().GetSupportedServerTypes().Contains(this.ServerType))
                 throw new ArgumentException(@"Invalid server type.");
         }
