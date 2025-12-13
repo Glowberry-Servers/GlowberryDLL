@@ -275,7 +275,7 @@ namespace glowberry.common
             for (int i = 0; i < PropertiesBuffer.Count; i++)
             {
                 string key = PropertiesBuffer.Keys.ToArray()[i];
-                int keyIndex = propertiesFile.FindIndex(x => x.ToLower().Contains(key));
+                int keyIndex = propertiesFile.FindIndex(x => x.Split('=')[0].ToLower().Equals(key));
                 
                 if (keyIndex != -1) propertiesFile[keyIndex] = $"{key}={PropertiesBuffer[key]}";
                 else propertiesFile.Add($"{key}={PropertiesBuffer[key]}");
