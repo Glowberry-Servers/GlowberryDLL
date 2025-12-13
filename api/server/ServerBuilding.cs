@@ -80,7 +80,7 @@ namespace glowberry.api.server
 
             if (this.ServersSection.GetAllSections().Any(x => x.SimpleName.ToLower().Equals(this.ServerName.ToLower())))
                 throw new ArgumentException(@"A server with that name already exists.");
-
+            
             // Stops here if relaxed validation is enabled.
             if (relaxed) return;
 
